@@ -164,7 +164,6 @@ for (let i = 0; i < 4; ++i) {
 // hqlevel 司令部等級
 
 function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
-  console.log("fuel: " + fuel + "\nammo: " + ammo + "\nsteel: " + steel + "\nbaux: " + baux + "\nsecretary: " + secretary + "\nisitaly: " + isitaly + "\nhqlevel: " + hqlevel);
   fuel = parseInt(fuel);
   ammo = parseInt(ammo);
   steel = parseInt(steel);
