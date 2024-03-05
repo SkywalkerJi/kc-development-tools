@@ -118,6 +118,9 @@ let dict;
       "陆基攻击机",
       "陆基战斗机",
       "夜战支援",
+      "潜水舰鱼雷",
+      "发烟装置",
+      "对潜飞机",
     ];
   } else if (lang == "zh-tw") {
     document.title = "艦隊Collection 開發工具";
