@@ -129,26 +129,6 @@ let dict;
       document.body.lang = "zh-tw";
     });
     dict = {
-      "Heavy Cruiser": "重巡洋艦",
-      "Fast Battleship": "巡洋戰艦",
-      "Repair Ship": "工作艦",
-      "Destroyer Escort": "海防艦",
-      "Destroyer": "駆逐艦",
-      "Light Cruiser": "軽巡洋艦",
-      "Torpedo Cruiser": "重雷装巡洋艦",
-      "Training Cruiser": "練習巡洋艦",
-      "Fleet Oiler": "補給艦",
-      "Aviation Cruiser": "航空巡洋艦",
-      "Aviation Battleship": "航空戰艦",
-      "Regular Aircraft Carrier": "正規空母",
-      "Armored Aircraft Carrier": "装甲空母",
-      "Light Aircraft Carrier": "軽空母",
-      "Submarine Aircraft Carrier": "潜水空母",
-      "Seaplane Tender": "水上機母艦",
-      "Submarine Tender": "潜水母艦",
-      "Submarine": "潜水艦",
-      "Battleship": "戰艦",
-      "Amphibious Assault Ship": "揚陸艦",
       "KanColle Development Tools": "艦隊Collection 開發工具",
       "Development Simulator & Recipe Generator": "開發模擬器 & 複合公式生成器",
       "Development Simulator": "開發模擬器",
@@ -190,6 +170,26 @@ let dict;
       "Project Homepage": "項目頁面",
       Feedback: "反饋",
       "Data Source\\(Chinese\\)": "數據來源",
+      "Heavy Cruiser": "重巡洋艦",
+      "Fast Battleship": "巡洋戰艦",
+      "Repair Ship": "工作艦",
+      "Destroyer Escort": "海防艦",
+      "Destroyer": "駆逐艦",
+      "Light Cruiser": "軽巡洋艦",
+      "Torpedo Cruiser": "重雷装巡洋艦",
+      "Training Cruiser": "練習巡洋艦",
+      "Fleet Oiler": "補給艦",
+      "Aviation Cruiser": "航空巡洋艦",
+      "Aviation Battleship": "航空戰艦",
+      "Regular Aircraft Carrier": "正規空母",
+      "Armored Aircraft Carrier": "装甲空母",
+      "Light Aircraft Carrier": "軽空母",
+      "Submarine Aircraft Carrier": "潜水空母",
+      "Seaplane Tender": "水上機母艦",
+      "Submarine Tender": "潜水母艦",
+      "Submarine": "潜水艦",
+      "Battleship": "戰艦",
+      "Amphibious Assault Ship": "揚陸艦",
     };
 
     itemtypenames = [
@@ -215,6 +215,9 @@ let dict;
       "陸基攻擊機",
       "陸基戰鬥機",
       "夜戰支援",
+      "潛水艦魚雷",
+      "發煙裝置",
+      "對潛飛機",
     ];
   } else if (lang == "ja") {
     document.title = "艦これ　装備開発ツール";
@@ -222,26 +225,6 @@ let dict;
       document.body.lang = "ja";
     });
     dict = {
-      "Heavy Cruiser": "重巡洋艦",
-      "Fast Battleship": "巡洋戦艦",
-      "Repair Ship": "工作艦",
-      "Destroyer Escort": "海防艦",
-      "Destroyer": "駆逐艦",
-      "Light Cruiser": "軽巡洋艦",
-      "Torpedo Cruiser": "重雷装巡洋艦",
-      "Training Cruiser": "練習巡洋艦",
-      "Fleet Oiler": "補給艦",
-      "Aviation Cruiser": "航空巡洋艦",
-      "Aviation Battleship": "航空戦艦",
-      "Regular Aircraft Carrier": "正規空母",
-      "Armored Aircraft Carrier": "装甲空母",
-      "Light Aircraft Carrier": "軽空母",
-      "Submarine Aircraft Carrier": "潜水空母",
-      "Seaplane Tender": "水上機母艦",
-      "Submarine Tender": "潜水母艦",
-      "Submarine": "潜水艦",
-      "Battleship": "戦艦",
-      "Amphibious Assault Ship": "揚陸艦",
       "KanColle Development Tools": "艦これ　装備開発ツール",
       "Development Simulator & Recipe Generator":
         "開発シミュレータ&複合レシピジェネレータ",
@@ -286,6 +269,26 @@ let dict;
       "Project Homepage": "ホームページへ",
       Feedback: "フィードバック",
       "Data Source\\(Chinese\\)": "データのソース（中国語）",
+      "Heavy Cruiser": "重巡洋艦",
+      "Fast Battleship": "巡洋戦艦",
+      "Repair Ship": "工作艦",
+      "Destroyer Escort": "海防艦",
+      "Destroyer": "駆逐艦",
+      "Light Cruiser": "軽巡洋艦",
+      "Torpedo Cruiser": "重雷装巡洋艦",
+      "Training Cruiser": "練習巡洋艦",
+      "Fleet Oiler": "補給艦",
+      "Aviation Cruiser": "航空巡洋艦",
+      "Aviation Battleship": "航空戦艦",
+      "Regular Aircraft Carrier": "正規空母",
+      "Armored Aircraft Carrier": "装甲空母",
+      "Light Aircraft Carrier": "軽空母",
+      "Submarine Aircraft Carrier": "潜水空母",
+      "Seaplane Tender": "水上機母艦",
+      "Submarine Tender": "潜水母艦",
+      "Submarine": "潜水艦",
+      "Battleship": "戦艦",
+      "Amphibious Assault Ship": "揚陸艦",
     };
 
     itemtypenames = [
@@ -311,6 +314,9 @@ let dict;
       "陸上攻撃機",
       "陸軍戦闘機",
       "夜戦装備",
+      "潜水艦魚雷",
+      "発煙装置",
+      "対潜飛行機",
     ];
   } else
     $(function () {
