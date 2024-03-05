@@ -614,7 +614,14 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
     }
   }
   // 121 驱逐舰
-  if (isitaly == 121 && secretary == 1) {
+  if (isitaly == 100 ||
+    isitaly == 101 ||
+    isitaly == 108 ||
+    isitaly == 113 ||
+    isitaly == 114 ||
+    isitaly == 115 ||
+    isitaly == 121 ||
+    isitaly == 125 && secretary == 1) {
     if (layer == 0 || layer == 2) {
       for (let i = 0; i < list.length; ++i) {
         if (list[i][0] == 66) list[i][1] -= 2;
