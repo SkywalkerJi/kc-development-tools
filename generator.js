@@ -84,7 +84,7 @@ function updateGen() {
   }
   let hq = $("[name=hqlevel_]")[0].value;
   results = [];
-  for (let secretary = 0; secretary < 3; ++secretary) {
+  for (let secretary = 0; secretary < 4; ++secretary) {
     for (let layer = 0; layer < 4; ++layer) {
       let materials = mins.slice(0);
       for (let i = 0; i < 4; ++i) {
@@ -98,7 +98,7 @@ function updateGen() {
           }
         }
       }
-      for (let isitaly = 99; isitaly < 117; ++isitaly) {
+      for (let isitaly = 99; isitaly < 129; ++isitaly) {
         //水雷
         if (
           secretary != 1 &&
@@ -109,13 +109,26 @@ function updateGen() {
             isitaly == 112 ||
             isitaly == 113 ||
             isitaly == 114 ||
-            isitaly == 115)
+            isitaly == 115 ||
+            isitaly == 121 ||
+            isitaly == 122 ||
+            isitaly == 123 ||
+            isitaly == 124 ||
+            isitaly == 125 ||
+            isitaly == 126 ||
+            isitaly == 127)
         )
           continue;
         //炮战
         if (
           secretary != 0 &&
-          (isitaly == 101 || isitaly == 105 || isitaly == 111)
+          (isitaly == 101 ||
+            isitaly == 105 ||
+            isitaly == 111 ||
+            isitaly == 117 ||
+            isitaly == 118 ||
+            isitaly == 119 ||
+            isitaly == 120)
         )
           continue;
         //航母
@@ -125,8 +138,15 @@ function updateGen() {
             isitaly == 103 ||
             isitaly == 104 ||
             isitaly == 106 ||
-            isitaly == 110||
+            isitaly == 110 ||
             isitaly == 116)
+        )
+          continue;
+        //潜水
+        if (
+          secretary != 3 &&
+          (isitaly == 128 ||
+            isitaly == 129)
         )
           continue;
         let result = new analysis(

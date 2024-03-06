@@ -181,6 +181,9 @@ button:not(.selected) {
 .type19 { background: #0a8f36; }
 .type20 { background: #66CC77; }
 .type21 { background: #F36D6D; }
+.type22 { background: #5887AB; }
+.type23 { background: #A0A0A0; }
+.type24 { background: #7ECCD8; }
 
 button.type0.selected { border: 2px inset #D15B5B; }
 button.type1.selected { border: 2px inset #CC3D3D; }
