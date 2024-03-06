@@ -74,8 +74,6 @@ function updateGen() {
     return;
   }
   let mins = [10, 10, 10, 10];
-  if (selectedItems.find((element) => element == 70))
-    mins = [240, 260, 10, 250];
   for (let i = 0; i < selectedItems.length; ++i) {
     for (let j = 0; j < 4; ++j) {
       if (items[selectedItems[i]][5][j] * 10 > mins[j])
