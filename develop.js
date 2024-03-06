@@ -507,6 +507,7 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
         if (list[i][0] == 70) list[i][1] += 2;
         if (list[i][0] == 221) list[i][1] += 8;
         if (list[i][0] == 445) list[i][1] += 4;
+        // if (list[i][0] == ?) list[i][1] -= 2;
       }
     } else if (layer == 3) {
       for (let i = 0; i < list.length; ++i) {
@@ -527,6 +528,7 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
         if (list[i][0] == 70) list[i][1] += 4;
         if (list[i][0] == 221) list[i][1] += 8;
         if (list[i][0] == 445) list[i][1] += 12;
+        // if (list[i][0] == ?) list[i][1] -= 2;
       }
     }
   }
@@ -604,12 +606,18 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
     if (layer == 0 || layer == 2) {
       for (let i = 0; i < list.length; ++i) {
         if (list[i][0] == 14) list[i][1] -= 2;
-        if (list[i][0] == 507) list[i][1] += 2;
+        // if (list[i][0] == 507) list[i][1] += ?;
       }
     } else if (layer == 1) {
       for (let i = 0; i < list.length; ++i) {
         if (list[i][0] == 14) list[i][1] -= 2;
         if (list[i][0] == 507) list[i][1] += 4;
+        // if (list[i][0] == ?) list[i][1] -= 2;
+      }
+    } else if (layer == 3) {
+      for (let i = 0; i < list.length; ++i) {
+        // if (list[i][0] == 507) list[i][1] += ?;
+        // if (list[i][0] == ?) list[i][1] -= ?;
       }
     }
   }
@@ -729,6 +737,7 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
   if (isitaly == 128 && secretary == 3) {
     if (layer == 0 || layer == 2) {
       for (let i = 0; i < list.length; ++i) {
+        // if (list[i][0] == 41) list[i][1] -= ?;
         if (list[i][0] == 75) list[i][1] -= 4;
         if (list[i][0] == 213) list[i][1] -= 2;
         if (list[i][0] == 440) list[i][1] += 4;
@@ -738,18 +747,23 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
       }
     } else if (layer == 1) {
       for (let i = 0; i < list.length; ++i) {
+        // if (list[i][0] == 41) list[i][1] -= ?;
         if (list[i][0] == 75) list[i][1] -= 4;
         if (list[i][0] == 213) list[i][1] -= 6;
         if (list[i][0] == 440) list[i][1] += 8;
+        // if (list[i][0] == 442) list[i][1] += ?;
         if (list[i][0] == 457) list[i][1] -= 4;
         if (list[i][0] == 511) list[i][1] += 4;
       }
     } else if (layer == 3) {
       for (let i = 0; i < list.length; ++i) {
+        // if (list[i][0] == 41) list[i][1] -= ?;
         if (list[i][0] == 75) list[i][1] -= 2;
         if (list[i][0] == 213) list[i][1] -= 4;
         if (list[i][0] == 440) list[i][1] += 4;
+        // if (list[i][0] == 442) list[i][1] += ?;
         if (list[i][0] == 457) list[i][1] -= 2;
+        // if (list[i][0] == 511) list[i][1] += ?;
       }
     }
   }
