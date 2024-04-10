@@ -623,7 +623,6 @@ function develop(fuel, ammo, steel, baux, secretary, isitaly, hqlevel) {
   }
   // 121 驱逐舰
   if (isitaly == 100 ||
-    isitaly == 101 ||
     isitaly == 108 ||
     isitaly == 113 ||
     isitaly == 114 ||
