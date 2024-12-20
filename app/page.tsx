@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useTheme } from 'next-themes';
 import { Resources, ShipType, LotteryResult } from '../types/lottery';
 import { calculateProbabilities } from '../utils/lottery';
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
   const [resources, setResources] = useState<Resources>({
     fuel: 0,
     steel: 0,
@@ -50,12 +52,21 @@ export default function Home() {
   return (
     <main className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Kancolle开发模拟器</h1>
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-gray-100">Kancolle开发模拟器</h1>
+        
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+          </button>
+        </div>
         
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">燃料</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">燃料</label>
               <input
                 type="number"
                 value={resources.fuel || ''}
@@ -66,7 +77,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">钢材</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">钢材</label>
               <input
                 type="number"
                 value={resources.steel || ''}
@@ -77,7 +88,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">弹药</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">弹药</label>
               <input
                 type="number"
                 value={resources.ammo || ''}
@@ -88,7 +99,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">铝土</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">铝土</label>
               <input
                 type="number"
                 value={resources.bauxite || ''}
@@ -102,7 +113,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">秘书舰种</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">秘书舰种</label>
               <select
                 value={shipType}
                 onChange={(e) => setShipType(e.target.value as ShipType)}
@@ -115,7 +126,7 @@ export default function Home() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">司令部等级</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">司令部等级</label>
               <input
                 type="number"
                 value={hqLevel}
@@ -143,7 +154,7 @@ export default function Home() {
 
         {results.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">开发概率表</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">开发概率表</h2>
             <div className="space-y-2">
               {results.map((result, index) => (
                 <div
