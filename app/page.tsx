@@ -60,7 +60,7 @@ export default function Home() {
                 type="number"
                 value={resources.fuel || ''}
                 onChange={(e) => handleResourceChange('fuel', e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                 min="0"
                 placeholder="0"
               />
@@ -71,7 +71,7 @@ export default function Home() {
                 type="number"
                 value={resources.steel || ''}
                 onChange={(e) => handleResourceChange('steel', e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                 min="0"
                 placeholder="0"
               />
@@ -82,7 +82,7 @@ export default function Home() {
                 type="number"
                 value={resources.ammo || ''}
                 onChange={(e) => handleResourceChange('ammo', e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                 min="0"
                 placeholder="0"
               />
@@ -93,7 +93,7 @@ export default function Home() {
                 type="number"
                 value={resources.bauxite || ''}
                 onChange={(e) => handleResourceChange('bauxite', e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                 min="0"
                 placeholder="0"
               />
@@ -106,7 +106,7 @@ export default function Home() {
               <select
                 value={shipType}
                 onChange={(e) => setShipType(e.target.value as ShipType)}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
               >
                 <option value="gun">炮战系</option>
                 <option value="torp">水雷系</option>
@@ -120,7 +120,7 @@ export default function Home() {
                 type="number"
                 value={hqLevel}
                 onChange={(e) => setHqLevel(Math.max(1, Math.min(120, parseInt(e.target.value) || 120)))}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                 min="1"
                 max="120"
                 placeholder="120"
@@ -143,20 +143,20 @@ export default function Home() {
 
         {results.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">抽奖概率表</h2>
+            <h2 className="text-xl font-bold mb-4">开发概率表</h2>
             <div className="space-y-2">
               {results.map((result, index) => (
                 <div
                   key={index}
-                  className="flex justify-between p-2 bg-gray-50 rounded"
+                  className="flex justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded"
                 >
                   <div className="flex-1">
-                    <span className="mr-2">{result.itemName}</span>
-                    <span className="text-gray-500 text-sm">
+                    <span className="mr-2 dark:text-gray-100">{result.itemName}</span>
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">
                       ({result.poolName}) - 稀有度:{result.rarity}
                     </span>
                     {result.requiredResources && (
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         最低需求: {result.requiredResources.fuel}燃/{result.requiredResources.ammo}弹/
                         {result.requiredResources.steel}钢/{result.requiredResources.bauxite}铝
                       </div>
@@ -165,8 +165,8 @@ export default function Home() {
                   <span className="ml-4">{result.probability}%</span>
                 </div>
               ))}
-              <div className="flex flex-col p-2 bg-red-50 rounded">
-                <div className="flex justify-between">
+              <div className="flex flex-col p-2 bg-red-50 dark:bg-red-900/30 rounded">
+                <div className="flex justify-between dark:text-gray-100">
                   <span>开发失败</span>
                   <span>{failureRate.toFixed(2)}%</span>
                 </div>
