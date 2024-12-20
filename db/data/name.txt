@@ -1,0 +1,31 @@
+
+舰种缩写：
+炮战系(BB/FBB/CA/AR) -> gun
+水雷系(DD/CL/CLT/CT/AO) -> torp
+空母系(CV/CVL/BBV/CAV/AV) -> air
+潜水系(SS/SSV/AS) -> sub
+
+资源缩写：
+油钢池 -> fs (fuel/steel)
+弹池 -> am (ammo)
+铝池 -> bx (bauxite)
+
+// 炮战系
+gunFs   // 炮战油钢池
+gunAm   // 炮战弹池
+gunBx   // 炮战铝池
+
+// 水雷系
+torpFs  // 水雷油钢池
+torpAm  // 水雷弹池
+torpBx  // 水雷铝池
+
+// 空母系
+airFs   // 空母油钢池
+airAm   // 空母弹池
+airBx   // 空母铝池
+
+// 潜水系
+subFs   // 潜水油钢池
+subAm   // 潜水弹池
+subBx   // 潜水铝池

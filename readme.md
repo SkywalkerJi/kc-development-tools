@@ -10,4 +10,4 @@ https://御坂美琴.cn/kc-development-tools/
 
 ## License
 
-MIT 
+GPLv3.0
