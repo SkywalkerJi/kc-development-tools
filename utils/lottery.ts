@@ -111,22 +111,30 @@ export async function calculateProbabilities(
 // 获取最高资源类型
 function getHighestResource(resources: Resources): 'fs' | 'am' | 'bx' {
   const { fuel, steel, ammo, bauxite } = resources;
-  const resourceMap = {
-    'fs': fuel + steel,
-    'am': ammo,
-    'bx': bauxite
-  } as const;
   
-  type ResourceKey = keyof typeof resourceMap;
-  let maxKey: ResourceKey = 'fs';
-  let maxValue = resourceMap[maxKey];
+  // 创建资源值数组
+  const resourceValues = [
+    { type: 'fuel', value: fuel },
+    { type: 'steel', value: steel },
+    { type: 'ammo', value: ammo },
+    { type: 'bauxite', value: bauxite }
+  ];
 
-  (Object.entries(resourceMap) as [ResourceKey, number][]).forEach(([key, value]) => {
-    if (value > maxValue) {
-      maxKey = key;
-      maxValue = value;
-    }
-  });
+  // 找出最高值的资源类型
+  const maxResource = resourceValues.reduce((max, current) => 
+    current.value > max.value ? current : max
+  );
 
-  return maxKey;
+  // 根据最高资源类型返回对应的池类型
+  switch (maxResource.type) {
+    case 'fuel':
+    case 'steel':
+      return 'fs';
+    case 'ammo':
+      return 'am';
+    case 'bauxite':
+      return 'bx';
+    default:
+      return 'fs'; // 默认返回 fs
+  }
 } 
