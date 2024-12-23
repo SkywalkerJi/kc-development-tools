@@ -8,10 +8,10 @@ import { calculateProbabilities } from '../utils/lottery';
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [resources, setResources] = useState<Resources>({
-    fuel: 0,
-    steel: 0,
-    ammo: 0,
-    bauxite: 0
+    fuel: 10,
+    steel: 10,
+    ammo: 10,
+    bauxite: 10
   });
   const [shipType, setShipType] = useState<ShipType>('gun');
   const [hqLevel, setHqLevel] = useState<number>(120);
@@ -21,10 +21,10 @@ export default function Home() {
   const handleCalculate = async () => {
     if (isCalculating) return;
 
-    // 验证资源值
-    const total = resources.fuel + resources.steel + resources.ammo + resources.bauxite;
-    if (total <= 0) {
-      alert('请输入有效的资源值');
+    // 验证资源值是否在合法范围内
+    const isValid = Object.values(resources).every(value => value >= 10 && value <= 300);
+    if (!isValid) {
+      alert('请确保所有资源值在10-300之间');
       return;
     }
     
@@ -42,7 +42,7 @@ export default function Home() {
   };
 
   const handleResourceChange = (key: keyof Resources, value: string) => {
-    const numValue = value === '' ? 0 : Math.max(0, parseInt(value));
+    const numValue = value === '' ? 10 : Math.min(300, Math.max(10, parseInt(value) || 10));
     setResources(prev => ({ ...prev, [key]: numValue }));
   };
 
@@ -72,8 +72,9 @@ export default function Home() {
                 value={resources.fuel || ''}
                 onChange={(e) => handleResourceChange('fuel', e.target.value)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="0"
-                placeholder="0"
+                min="10"
+                max="300"
+                placeholder="10"
               />
             </div>
             <div>
@@ -83,8 +84,9 @@ export default function Home() {
                 value={resources.steel || ''}
                 onChange={(e) => handleResourceChange('steel', e.target.value)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="0"
-                placeholder="0"
+                min="10"
+                max="300"
+                placeholder="10"
               />
             </div>
             <div>
@@ -94,8 +96,9 @@ export default function Home() {
                 value={resources.ammo || ''}
                 onChange={(e) => handleResourceChange('ammo', e.target.value)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="0"
-                placeholder="0"
+                min="10"
+                max="300"
+                placeholder="10"
               />
             </div>
             <div>
@@ -105,8 +108,9 @@ export default function Home() {
                 value={resources.bauxite || ''}
                 onChange={(e) => handleResourceChange('bauxite', e.target.value)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="0"
-                placeholder="0"
+                min="10"
+                max="300"
+                placeholder="10"
               />
             </div>
           </div>
