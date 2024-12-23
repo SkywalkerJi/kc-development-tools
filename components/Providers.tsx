@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { Language } from '../types/lottery';
 import Navigation from './Navigation';
+import { LanguageProvider } from '../contexts/LanguageContext';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('zh_cn');
@@ -19,10 +20,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="min-h-screen">
-        <Navigation language={language} onLanguageChange={setLanguage} />
-        {children}
-      </div>
+      <LanguageProvider language={language} setLanguage={setLanguage}>
+        <div className="min-h-screen flex">
+          <Navigation language={language} onLanguageChange={setLanguage} />
+          <div className="flex-1">
+            <div className="max-w-4xl mx-auto">
+              {children}
+            </div>
+          </div>
+        </div>
+      </LanguageProvider>
     </ThemeProvider>
   );
 } 

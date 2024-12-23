@@ -5,10 +5,12 @@ import { Resources, ShipType, LotteryResult } from '../../types/lottery';
 import { calculateProbabilities } from '../../utils/lottery';
 import { getTranslation } from '../../utils/i18n';
 import { HelpModal } from '../../components/HelpModal';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function Simulator() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
-  const t = getTranslation('zh_cn'); // 暂时使用固定语言，后续会从 context 获取
+  const { language } = useLanguage();
+  const t = getTranslation(language);
 
   const [resources, setResources] = useState<Resources>({
     fuel: 10,
@@ -52,8 +54,8 @@ export default function Simulator() {
   const failureRate = 100 - totalProbability;
 
   return (
-    <main className="min-h-screen p-8">
-      <div className="max-w-2xl mx-auto space-y-8">
+    <main className="p-4 lg:p-8">
+      <div className="space-y-8">
         <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100">{t.title}</h1>
         
         <div className="space-y-4">
