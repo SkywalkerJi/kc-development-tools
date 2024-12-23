@@ -58,4 +58,33 @@ export interface LotteryResult {
   rarity?: number;
   requiredResources?: Resources;
   failureReasons?: FailureReason[];
+}
+
+export interface ItemType {
+  id: number;
+  name: {
+    ja_jp: string;
+    zh_cn: string;
+    en_us?: string;
+  };
+  icon: number;
+}
+
+export interface Item {
+  id: number;
+  name: {
+    ja_jp: string;
+    zh_cn: string;
+    en_us?: string;
+  };
+  type: number;
+  rarity: number;
+  craftable: boolean;
+  dismantle: number[];
+}
+
+export interface RecipeResult {
+  resources: Resources;
+  shipTypes: ShipType[];
+  probability: number;
 } 

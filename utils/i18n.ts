@@ -56,7 +56,11 @@ export const translations = {
       itemNotFound: '装備データなし'
     },
     requiredLevel: '必要司令部レベル',
-    requiredResources: '必要資源'
+    requiredResources: '必要資源',
+    selectType: '装備種別を選択',
+    selectItems: '装備を選択',
+    recipeResults: '開発レシピ',
+    allEquipments: '全ての開発可能装備を表示中',
   },
   zh_cn: {
     title: 'Kancolle开发模拟器',
@@ -113,7 +117,11 @@ export const translations = {
       itemNotFound: '装备数据未找到'
     },
     requiredLevel: '需要司令部等级',
-    requiredResources: '需要资源'
+    requiredResources: '需要资源',
+    selectType: '选择装备类型',
+    selectItems: '选择装备',
+    recipeResults: '开发配方',
+    allEquipments: '显示所有可开发装备',
   },
   zh_tw: {
     title: 'Kancolle開發模擬器',
@@ -170,7 +178,11 @@ export const translations = {
       itemNotFound: '裝備數據未找到'
     },
     requiredLevel: '需要司令部等級',
-    requiredResources: '需要資源'
+    requiredResources: '需要資源',
+    selectType: '選擇裝備類型',
+    selectItems: '選擇裝備',
+    recipeResults: '開發配方',
+    allEquipments: '顯示所有可開發裝備',
   },
   en_us: {
     title: 'Kancolle Equipment Development Simulator',
@@ -227,7 +239,11 @@ export const translations = {
       itemNotFound: 'Equipment Data Not Found'
     },
     requiredLevel: 'Required HQ Level',
-    requiredResources: 'Required Resources'
+    requiredResources: 'Required Resources',
+    selectType: 'Select Equipment Type',
+    selectItems: 'Select Equipment',
+    recipeResults: 'Development Recipes',
+    allEquipments: 'Showing all developable equipment',
   }
 } as const;
 
