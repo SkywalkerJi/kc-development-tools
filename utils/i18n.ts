@@ -3,6 +3,11 @@ import { Language } from '../types/lottery';
 export const translations = {
   ja_jp: {
     title: '艦これ装備開発シミュレーター',
+    nav: {
+      simulator: '開発シミュレーター',
+      formula: '複合レシピジェネレーター',
+      table: '確率一覧表'
+    },
     resources: {
       fuel: '燃料',
       steel: '鋼材',
@@ -55,6 +60,11 @@ export const translations = {
   },
   zh_cn: {
     title: 'Kancolle开发模拟器',
+    nav: {
+      simulator: '开发模拟器',
+      formula: '复合公式生成器',
+      table: '概率一览表'
+    },
     resources: {
       fuel: '燃料',
       steel: '钢材',
@@ -107,6 +117,11 @@ export const translations = {
   },
   zh_tw: {
     title: 'Kancolle開發模擬器',
+    nav: {
+      simulator: '開發模擬器',
+      formula: '複合公式生成器',
+      table: '概率一覽表'
+    },
     resources: {
       fuel: '燃料',
       steel: '鋼材',
@@ -159,6 +174,11 @@ export const translations = {
   },
   en_us: {
     title: 'Kancolle Equipment Development Simulator',
+    nav: {
+      simulator: 'Development Simulator',
+      formula: 'Recipe Generator',
+      table: 'Probability Table'
+    },
     resources: {
       fuel: 'Fuel',
       steel: 'Steel',
