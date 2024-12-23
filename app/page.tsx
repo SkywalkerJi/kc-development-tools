@@ -5,8 +5,41 @@ import { Resources, ShipType, LotteryResult, Language } from '../types/lottery';
 import { calculateProbabilities } from '../utils/lottery';
 import { getTranslation, getItemName } from '../utils/i18n';
 
+// 帮助弹框组件
+function HelpModal({ isOpen, onClose, title, children }: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  title: string;
+  children: React.ReactNode;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-lg w-full p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{title}</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+          >
+            <span className="sr-only">关闭</span>
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="mt-2 text-gray-600 dark:text-gray-300 space-y-2">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [language, setLanguage] = useState<Language>('zh_cn');
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const t = getTranslation(language);
 
   // 更新页面标题
@@ -127,7 +160,20 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.secretary}</label>
+              <div className="flex items-center gap-2">
+                <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">
+                  {t.secretary}
+                </label>
+                <button
+                  onClick={() => setIsHelpOpen(true)}
+                  className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                  title={t.shipTypeHelp.title}
+                >
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
               <select
                 value={shipType}
                 onChange={(e) => setShipType(e.target.value as ShipType)}
@@ -246,6 +292,19 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <HelpModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        title={t.shipTypeHelp.title}
+      >
+        <div className="space-y-3">
+          <p>{t.shipTypeHelp.gun}</p>
+          <p>{t.shipTypeHelp.torp}</p>
+          <p>{t.shipTypeHelp.air}</p>
+          <p>{t.shipTypeHelp.sub}</p>
+        </div>
+      </HelpModal>
     </main>
   );
 }
