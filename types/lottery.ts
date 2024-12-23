@@ -12,8 +12,11 @@ export interface ItemDetails {
   rarity: number;
   dismantle: number[];
   name: {
+    ja_jp: string;
+    ja_kana: string;
+    ja_romaji: string;
     zh_cn: string;
-    [key: string]: string;
+    en_us?: string;
   };
 }
 
