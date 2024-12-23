@@ -98,7 +98,7 @@ export async function calculateProbabilities(
   } else if (results.length === 0 && failureReasons.length > 0) {
     // 如果没有成功的结果，创建一个只包含失败原因的结果
     results.push({
-      poolName: '失败',
+      poolName: 'failed',
       probability: 0,
       shipId: 0,
       failureReasons

@@ -1,13 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
 import { Resources, ShipType, LotteryResult, Language } from '../types/lottery';
 import { calculateProbabilities } from '../utils/lottery';
 import { getTranslation, getItemName } from '../utils/i18n';
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
   const [language, setLanguage] = useState<Language>('zh_cn');
   const t = getTranslation(language);
 
@@ -187,7 +185,7 @@ export default function Home() {
                       }}, language)}
                     </span>
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      ({result.poolName}) - {t.rarity}:{result.rarity}
+                      ({t.pools[result.poolName.split('(')[0] as keyof typeof t.pools]}) - {t.rarity}:{result.rarity}
                     </span>
                     {result.requiredResources && (
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">

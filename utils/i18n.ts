@@ -9,6 +9,20 @@ export const translations = {
       ammo: '弾薬',
       bauxite: 'ボーキサイト'
     },
+    pools: {
+      gunFs: '砲戦系(燃料/鋼材)',
+      gunAm: '砲戦系(弾薬)',
+      gunBx: '砲戦系(ボーキ)',
+      torpFs: '水雷系(燃料/鋼材)',
+      torpAm: '水雷系(弾薬)',
+      torpBx: '水雷系(ボーキ)',
+      airFs: '空母系(燃料/鋼材)',
+      airAm: '空母系(弾薬)',
+      airBx: '空母系(ボーキ)',
+      subFs: '潜水系(燃料/鋼材)',
+      subAm: '潜水系(弾薬)',
+      subBx: '潜水系(ボーキ)'
+    },
     secretary: '秘書艦種別',
     shipTypes: {
       gun: '砲戦系',
@@ -39,6 +53,20 @@ export const translations = {
       steel: '钢材',
       ammo: '弹药',
       bauxite: '铝土'
+    },
+    pools: {
+      gunFs: '炮战系(燃料/钢材)',
+      gunAm: '炮战系(弹药)',
+      gunBx: '炮战系(铝)',
+      torpFs: '水雷系(燃料/钢材)',
+      torpAm: '水雷系(弹药)',
+      torpBx: '水雷系(铝)',
+      airFs: '空母系(燃料/钢材)',
+      airAm: '空母系(弹药)',
+      airBx: '空母系(铝)',
+      subFs: '潜水系(燃料/钢材)',
+      subAm: '潜水系(弹药)',
+      subBx: '潜水系(铝)'
     },
     secretary: '秘书舰种',
     shipTypes: {
@@ -71,6 +99,20 @@ export const translations = {
       ammo: '彈藥',
       bauxite: '鋁土'
     },
+    pools: {
+      gunFs: '砲戰系(燃料/鋼材)',
+      gunAm: '砲戰系(彈藥)',
+      gunBx: '砲戰系(鋁)',
+      torpFs: '水雷系(燃料/鋼材)',
+      torpAm: '水雷系(彈藥)',
+      torpBx: '水雷系(鋁)',
+      airFs: '空母系(燃料/鋼材)',
+      airAm: '空母系(彈藥)',
+      airBx: '空母系(鋁)',
+      subFs: '潛水系(燃料/鋼材)',
+      subAm: '潛水系(彈藥)',
+      subBx: '潛水系(鋁)'
+    },
     secretary: '秘書艦種',
     shipTypes: {
       gun: '砲戰系',
@@ -101,6 +143,20 @@ export const translations = {
       steel: 'Steel',
       ammo: 'Ammo',
       bauxite: 'Bauxite'
+    },
+    pools: {
+      gunFs: 'Gunboat (Fuel/Steel)',
+      gunAm: 'Gunboat (Ammo)',
+      gunBx: 'Gunboat (Bauxite)',
+      torpFs: 'Torpedo (Fuel/Steel)',
+      torpAm: 'Torpedo (Ammo)',
+      torpBx: 'Torpedo (Bauxite)',
+      airFs: 'Carrier (Fuel/Steel)',
+      airAm: 'Carrier (Ammo)',
+      airBx: 'Carrier (Bauxite)',
+      subFs: 'Submarine (Fuel/Steel)',
+      subAm: 'Submarine (Ammo)',
+      subBx: 'Submarine (Bauxite)'
     },
     secretary: 'Secretary Ship Type',
     shipTypes: {
