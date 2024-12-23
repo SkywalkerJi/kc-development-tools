@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "舰队收藏开发模拟器",
-  description: "舰队收藏装备开发概率计算工具",
+  title: "Kancolle Development Tools",
+  description: "Kancolle Development Tools",
 };
 
 export default function RootLayout({

@@ -1,12 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { Resources, ShipType, LotteryResult } from '../types/lottery';
+import { Resources, ShipType, LotteryResult, Language } from '../types/lottery';
 import { calculateProbabilities } from '../utils/lottery';
+import { getTranslation, getItemName } from '../utils/i18n';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
+  const [language, setLanguage] = useState<Language>('zh_cn');
+  const t = getTranslation(language);
+
+  // 更新页面标题
+  useEffect(() => {
+    document.title = t.title;
+  }, [language, t.title]);
+
   const [resources, setResources] = useState<Resources>({
     fuel: 10,
     steel: 10,
@@ -52,21 +61,24 @@ export default function Home() {
   return (
     <main className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-gray-100">Kancolle开发模拟器</h1>
-        
-        {/* <div className="flex justify-end mb-4">
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t.title}</h1>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as Language)}
+            className="p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
           >
-            {theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
-          </button>
-        </div> */}
+            <option value="ja_jp">日本語</option>
+            <option value="zh_cn">简体中文</option>
+            <option value="zh_tw">繁體中文</option>
+            <option value="en_us">English</option>
+          </select>
+        </div>
         
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">燃料</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.resources.fuel}</label>
               <input
                 type="number"
                 value={resources.fuel || ''}
@@ -78,7 +90,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">钢材</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.resources.steel}</label>
               <input
                 type="number"
                 value={resources.steel || ''}
@@ -90,7 +102,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">弹药</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.resources.ammo}</label>
               <input
                 type="number"
                 value={resources.ammo || ''}
@@ -102,7 +114,7 @@ export default function Home() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">铝土</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.resources.bauxite}</label>
               <input
                 type="number"
                 value={resources.bauxite || ''}
@@ -117,20 +129,20 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">秘书舰种</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.secretary}</label>
               <select
                 value={shipType}
                 onChange={(e) => setShipType(e.target.value as ShipType)}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
               >
-                <option value="gun">炮战系</option>
-                <option value="torp">水雷系</option>
-                <option value="air">空母系</option>
-                <option value="sub">潜水系</option>
+                <option value="gun">{t.shipTypes.gun}</option>
+                <option value="torp">{t.shipTypes.torp}</option>
+                <option value="air">{t.shipTypes.air}</option>
+                <option value="sub">{t.shipTypes.sub}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">司令部等级</label>
+              <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">{t.hqLevel}</label>
               <input
                 type="number"
                 value={hqLevel}
@@ -152,13 +164,13 @@ export default function Home() {
                 : 'bg-blue-500 hover:bg-blue-600'
             }`}
           >
-            {isCalculating ? '计算中...' : '计算概率'}
+            {isCalculating ? t.calculating : t.calculate}
           </button>
         </div>
 
         {results.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">开发概率表</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">{t.resultTitle}</h2>
             <div className="space-y-2">
               {results.map((result, index) => (
                 <div
@@ -166,14 +178,23 @@ export default function Home() {
                   className="flex justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded"
                 >
                   <div className="flex-1">
-                    <span className="mr-2 dark:text-gray-100">{result.itemName}</span>
+                    <span className="mr-2 dark:text-gray-100">
+                      {result.itemName && getItemName({ name: { 
+                        ja_jp: result.itemName,
+                        ja_kana: '',
+                        ja_romaji: '',
+                        zh_cn: result.itemName
+                      }}, language)}
+                    </span>
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      ({result.poolName}) - 稀有度:{result.rarity}
+                      ({result.poolName}) - {t.rarity}:{result.rarity}
                     </span>
                     {result.requiredResources && (
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        最低需求: {result.requiredResources.fuel}燃/{result.requiredResources.ammo}弹/
-                        {result.requiredResources.steel}钢/{result.requiredResources.bauxite}铝
+                        {t.minRequirement}: {result.requiredResources.fuel}{t.resources.fuel}/
+                        {result.requiredResources.ammo}{t.resources.ammo}/
+                        {result.requiredResources.steel}{t.resources.steel}/
+                        {result.requiredResources.bauxite}{t.resources.bauxite}
                       </div>
                     )}
                   </div>
@@ -182,28 +203,39 @@ export default function Home() {
               ))}
               <div className="flex flex-col p-2 bg-red-50 dark:bg-red-900/30 rounded">
                 <div className="flex justify-between dark:text-gray-100">
-                  <span>开发失败</span>
+                  <span>{t.developmentFailed}</span>
                   <span>{failureRate.toFixed(2)}%</span>
                 </div>
                 {results[0]?.failureReasons && results[0].failureReasons.length > 0 && (
                   <div className="mt-2 text-sm text-gray-600">
-                    <div className="font-medium mb-1">失败原因：</div>
+                    <div className="font-medium mb-1">{t.failureReasons}：</div>
                     <div className="space-y-1">
                       {results[0].failureReasons.map((failure, index) => (
                         <div key={index} className="pl-2 border-l-2 border-red-200">
                           <div className="flex items-baseline">
-                            <span className="font-medium">{failure.itemName}</span>
-                            <span className="ml-2 text-sm text-red-500">- {failure.reason}</span>
+                            <span className="font-medium">
+                              {getItemName({ name: {
+                                ja_jp: failure.itemName,
+                                ja_kana: '',
+                                ja_romaji: '',
+                                zh_cn: failure.itemName
+                              }}, language)}
+                            </span>
+                            <span className="ml-2 text-sm text-red-500">
+                              - {t.reasons[failure.reason as keyof typeof t.reasons]}
+                            </span>
                           </div>
                           {failure.requiredLevel && (
                             <div className="text-xs text-gray-500">
-                              需要司令部等级: {failure.requiredLevel}
+                              {t.requiredLevel}: {failure.requiredLevel}
                             </div>
                           )}
                           {failure.requiredResources && (
                             <div className="text-xs text-gray-500">
-                              需要资源: {failure.requiredResources.fuel}燃/{failure.requiredResources.ammo}弹/
-                              {failure.requiredResources.steel}钢/{failure.requiredResources.bauxite}铝
+                              {t.requiredResources}: {failure.requiredResources.fuel}{t.resources.fuel}/
+                              {failure.requiredResources.ammo}{t.resources.ammo}/
+                              {failure.requiredResources.steel}{t.resources.steel}/
+                              {failure.requiredResources.bauxite}{t.resources.bauxite}
                             </div>
                           )}
                         </div>

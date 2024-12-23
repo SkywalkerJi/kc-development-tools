@@ -45,7 +45,7 @@ export async function calculateProbabilities(
       if (!itemDetails) {
         failureReasons.push({
           itemName: `装备${item.id}`,
-          reason: '装备数据未找到'
+          reason: 'itemNotFound'
         });
         return;
       }
@@ -62,7 +62,7 @@ export async function calculateProbabilities(
       if (itemDetails.rarity * 10 > hqLevel) {
         failureReasons.push({
           itemName,
-          reason: '司令部等级不足',
+          reason: 'levelInsufficient',
           requiredLevel: itemDetails.rarity * 10
         });
         return;
@@ -72,7 +72,7 @@ export async function calculateProbabilities(
       if (!checkResourceRequirements(resources, itemDetails.dismantle)) {
         failureReasons.push({
           itemName,
-          reason: '资源不足',
+          reason: 'resourceInsufficient',
           requiredResources
         });
         return;

@@ -1,4 +1,5 @@
 export type ShipType = 'gun' | 'torp' | 'air' | 'sub';
+export type Language = 'ja_jp' | 'zh_cn' | 'zh_tw' | 'en_us';
 
 export interface Resources {
   fuel: number;
@@ -16,6 +17,7 @@ export interface ItemDetails {
     ja_kana: string;
     ja_romaji: string;
     zh_cn: string;
+    zh_tw?: string;
     en_us?: string;
   };
 }
