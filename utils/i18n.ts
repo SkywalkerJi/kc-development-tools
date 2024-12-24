@@ -248,23 +248,18 @@ export const translations = {
 } as const;
 
 export function getItemName(item: { name: { [key: string]: string } }, language: Language): string {
-  if (language === 'zh_tw' && item.name.zh_tw) {
-    return item.name.zh_tw;
-  }
-  
-  if (language === 'en_us' && item.name.en_us) {
-    return item.name.en_us;
-  }
-  
-  if (language === 'zh_cn') {
-    return item.name.zh_cn;
+  // 如果请求繁体中文
+  if (language === 'zh_tw') {
+    // 如果有繁体中文翻译就使用，否则使用简体中文
+    return item.name.zh_tw || item.name.zh_cn;
   }
   
   // 如果请求英文但没有英文翻译，使用日文
-  if (language === 'en_us') {
+  if (language === 'en_us' && !item.name.en_us) {
     return item.name.ja_jp;
   }
   
+  // 其他语言直接返回对应翻译
   return item.name[language];
 }
 
