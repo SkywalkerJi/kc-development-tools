@@ -1,16 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Resources, ShipType, LotteryResult } from '../../types/lottery';
 import { calculateProbabilities } from '../../utils/lottery';
 import { getTranslation } from '../../utils/i18n';
 import { HelpModal } from '../../components/HelpModal';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useSearchParams } from 'next/navigation';
 
 export default function Simulator() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const { language } = useLanguage();
   const t = getTranslation(language);
+  const searchParams = useSearchParams();
 
   const [resources, setResources] = useState<Resources>({
     fuel: 10,
@@ -23,11 +25,45 @@ export default function Simulator() {
   const [results, setResults] = useState<LotteryResult[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
 
-  const handleCalculate = async () => {
+  // 从URL参数读取并设置初始值
+  useEffect(() => {
+    const fuel = Number(searchParams.get('fuel')) || 10;
+    const ammo = Number(searchParams.get('ammo')) || 10;
+    const steel = Number(searchParams.get('steel')) || 10;
+    const bauxite = Number(searchParams.get('bauxite')) || 10;
+    const secretary = searchParams.get('secretary') as ShipType || 'gun';
+    const level = Number(searchParams.get('hqLevel')) || 120;
+    const shouldAutoCalculate = searchParams.get('autoCalculate') === 'true';
+
+    setResources({
+      fuel: Math.min(300, Math.max(10, fuel)),
+      ammo: Math.min(300, Math.max(10, ammo)),
+      steel: Math.min(300, Math.max(10, steel)),
+      bauxite: Math.min(300, Math.max(10, bauxite))
+    });
+    setShipType(secretary);
+    setHqLevel(Math.min(120, Math.max(1, level)));
+
+    // 如果设置了自动计算标志，自动触发计算
+    if (shouldAutoCalculate) {
+      handleCalculate({
+        fuel: Math.min(300, Math.max(10, fuel)),
+        ammo: Math.min(300, Math.max(10, ammo)),
+        steel: Math.min(300, Math.max(10, steel)),
+        bauxite: Math.min(300, Math.max(10, bauxite))
+      }, secretary, level);
+    }
+  }, [searchParams]);
+
+  const handleCalculate = async (
+    resourcesToUse: Resources = resources,
+    secretaryToUse: ShipType = shipType,
+    levelToUse: number = hqLevel
+  ) => {
     if (isCalculating) return;
 
     // 验证资源值是否在合法范围内
-    const isValid = Object.values(resources).every(value => value >= 10 && value <= 300);
+    const isValid = Object.values(resourcesToUse).every(value => value >= 10 && value <= 300);
     if (!isValid) {
       alert('请确保所有资源值在10-300之间');
       return;
@@ -35,7 +71,7 @@ export default function Simulator() {
     
     setIsCalculating(true);
     try {
-      const results = await calculateProbabilities(resources, shipType, hqLevel);
+      const results = await calculateProbabilities(resourcesToUse, secretaryToUse, levelToUse);
       setResults(results);
     } catch (error) {
       console.error('计算概率时出错:', error);
@@ -52,6 +88,10 @@ export default function Simulator() {
 
   const totalProbability = results.reduce((sum, item) => sum + item.probability, 0);
   const failureRate = 100 - totalProbability;
+
+  const handleCalculateClick = () => {
+    handleCalculate(resources, shipType, hqLevel);
+  };
 
   return (
     <main className="p-4 lg:p-8">
@@ -152,7 +192,7 @@ export default function Simulator() {
           </div>
 
           <button
-            onClick={handleCalculate}
+            onClick={handleCalculateClick}
             disabled={isCalculating}
             className={`w-full py-2 rounded text-white ${
               isCalculating 

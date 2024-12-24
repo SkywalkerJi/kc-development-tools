@@ -85,7 +85,9 @@ export default function FormulaGenerator() {
       steel: recipe.resources.steel.toString(),
       bauxite: recipe.resources.bauxite.toString(),
       secretary: recipe.shipTypes[0],
-      items: selectedItems.join(',')
+      items: selectedItems.join(','),
+      hqLevel: hqLevel.toString(),
+      autoCalculate: 'true'
     });
     return `/simulator?${params.toString()}`;
   };
