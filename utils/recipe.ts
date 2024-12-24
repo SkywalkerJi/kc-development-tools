@@ -97,11 +97,18 @@ export async function generateRecipes(items: Item[]): Promise<RecipeResult[]> {
           const probability = Math.min(...targetResults.map(r => r.probability));
           console.log('找到有效配方，概率:', probability);
           
+          // 构建每个装备的概率映射
+          const itemProbabilities: Record<number, number> = {};
+          targetResults.forEach(result => {
+            itemProbabilities[result.shipId] = result.probability;
+          });
+          
           // 7. 添加配方
           validRecipes.push({
             resources,
             shipTypes: [secretary],
-            probability
+            probability,
+            itemProbabilities
           });
         }
       } catch (error) {

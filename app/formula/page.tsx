@@ -7,6 +7,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { generateRecipes } from "../../utils/recipe";
 import itemTypesData from "../../db/item_types.json";
 import itemsData from "../../db/items.json";
+import Link from 'next/link';
 
 export default function FormulaGenerator() {
   const { language } = useLanguage();
@@ -17,6 +18,7 @@ export default function FormulaGenerator() {
   const [recipes, setRecipes] = useState<RecipeResult[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [expandedRecipes, setExpandedRecipes] = useState<number[]>([]);
 
   // 获取装备类型和装备列表
   const items = (itemsData.items as Item[])
@@ -65,6 +67,37 @@ export default function FormulaGenerator() {
     }
   }, [selectedItems]);
 
+  // 处理配方展开/收起
+  const toggleRecipe = (index: number) => {
+    setExpandedRecipes(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
+  // 生成模拟器链接
+  const getSimulatorLink = (recipe: RecipeResult) => {
+    const params = new URLSearchParams({
+      fuel: recipe.resources.fuel.toString(),
+      ammo: recipe.resources.ammo.toString(),
+      steel: recipe.resources.steel.toString(),
+      bauxite: recipe.resources.bauxite.toString(),
+      secretary: recipe.shipTypes[0],
+      items: selectedItems.join(',')
+    });
+    return `/simulator?${params.toString()}`;
+  };
+
+  // 当配方较少时默认展开
+  useEffect(() => {
+    if (recipes.length <= 3) {
+      setExpandedRecipes(recipes.map((_, index) => index));
+    } else {
+      setExpandedRecipes([]);
+    }
+  }, [recipes]);
+
   return (
     <main className="p-4 lg:p-8 max-w-[1920px] mx-auto">
       <div className="space-y-6">
@@ -72,38 +105,40 @@ export default function FormulaGenerator() {
           {t.nav.formula}
         </h1>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* 装备类型和选择 */}
           {itemsByType.map(({ type, items }) => (
-            <div key={type.id} className="space-y-3">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center">
-                {getItemName(type, language)}
-                <span className="ml-2 text-sm text-gray-500">
-                  ({items.length})
-                </span>
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-9 gap-2">
-                {items.map((item) => (
-                  <div key={item.id} className="relative">
-                    <button
-                      onClick={() => handleItemSelect(item.id)}
-                      onMouseEnter={() => setHoveredItem(item.id)}
-                      onMouseLeave={() => setHoveredItem(null)}
-                      className={`w-full p-3 rounded text-sm min-h-[48px] flex items-center justify-center text-center break-words ${
-                        selectedItems.includes(item.id)
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      }`}
-                    >
-                      {getItemName(item, language)}
-                    </button>
-                    {hoveredItem === item.id && (
-                      <div className="absolute z-10 bg-gray-900 text-white p-2 rounded shadow-lg text-xs -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                        {t.rarity}: {item.rarity}
-                      </div>
-                    )}
-                  </div>
-                ))}
+            <div key={type.id}>
+              <div className="flex items-center gap-4 mb-2">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center whitespace-nowrap">
+                  {getItemName(type, language)}
+                  <span className="ml-2 text-sm text-gray-500">
+                    ({items.length})
+                  </span>
+                </h2>
+                <div className="flex-1 flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <div key={item.id} className="relative">
+                      <button
+                        onClick={() => handleItemSelect(item.id)}
+                        onMouseEnter={() => setHoveredItem(item.id)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                        className={`px-2 py-1.5 rounded text-sm whitespace-nowrap ${
+                          selectedItems.includes(item.id)
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        }`}
+                      >
+                        {getItemName(item, language)}
+                      </button>
+                      {hoveredItem === item.id && (
+                        <div className="absolute z-10 bg-gray-900 text-white p-2 rounded shadow-lg text-xs -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                          {t.rarity}: {item.rarity}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
@@ -151,22 +186,84 @@ export default function FormulaGenerator() {
                 {recipes.map((recipe, index) => (
                   <div
                     key={index}
-                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded flex items-center justify-between"
+                    className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-all duration-200"
                   >
-                    <div className="flex items-center gap-6 text-sm">
-                      <div className="flex gap-4">
-                        <span>{t.resources.fuel}: {recipe.resources.fuel}</span>
-                        <span>{t.resources.ammo}: {recipe.resources.ammo}</span>
-                        <span>{t.resources.steel}: {recipe.resources.steel}</span>
-                        <span>{t.resources.bauxite}: {recipe.resources.bauxite}</span>
+                    <div 
+                      className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                      onClick={() => toggleRecipe(index)}
+                    >
+                      <div className="flex items-center gap-6 text-sm">
+                        <div className="flex gap-4">
+                          <span>{t.resources.fuel}: {recipe.resources.fuel}</span>
+                          <span>{t.resources.ammo}: {recipe.resources.ammo}</span>
+                          <span>{t.resources.steel}: {recipe.resources.steel}</span>
+                          <span>{t.resources.bauxite}: {recipe.resources.bauxite}</span>
+                        </div>
+                        <div className="text-gray-500">
+                          {t.secretary}: {recipe.shipTypes.map(type => t.shipTypes[type]).join("/")}
+                        </div>
                       </div>
-                      <div className="text-gray-500">
-                        {t.secretary}: {recipe.shipTypes.map(type => t.shipTypes[type]).join("/")}
+                      <div className="flex items-center gap-4">
+                        <Link 
+                          href={getSimulatorLink(recipe)}
+                          className="text-blue-500 hover:text-blue-600 text-sm px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          详情
+                        </Link>
+                        <span className="text-lg font-bold min-w-[60px] text-right">
+                          {recipe.probability}%
+                        </span>
+                        <svg
+                          className={`w-5 h-5 transition-transform duration-200 ${
+                            expandedRecipes.includes(index) ? 'transform rotate-180' : ''
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                       </div>
                     </div>
-                    <span className="text-lg font-bold ml-4">
-                      {recipe.probability}%
-                    </span>
+                    <div
+                      className={`transition-all duration-200 ${
+                        expandedRecipes.includes(index)
+                          ? 'max-h-[500px] opacity-100'
+                          : 'max-h-0 opacity-0'
+                      } overflow-hidden`}
+                    >
+                      <div className="px-4 pb-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b dark:border-gray-700">
+                              <th className="py-2 text-left font-medium text-gray-600 dark:text-gray-300">装备</th>
+                              <th className="py-2 text-right font-medium text-gray-600 dark:text-gray-300 w-24">概率</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {selectedItems.map(itemId => {
+                              const item = items.find(i => i.id === itemId);
+                              const probability = recipe.itemProbabilities?.[itemId] || 0;
+                              return item && (
+                                <tr key={itemId} className="border-b dark:border-gray-700 last:border-0">
+                                  <td className="py-2">{getItemName(item, language)}</td>
+                                  <td className="py-2 text-right font-medium">
+                                    {probability.toFixed(2)}%
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="border-t-2 dark:border-gray-600">
+                              <td className="py-2 font-medium text-red-500">开发失败</td>
+                              <td className="py-2 text-right font-medium text-red-500">
+                                {(100 - recipe.probability).toFixed(2)}%
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

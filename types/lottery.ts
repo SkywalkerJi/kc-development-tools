@@ -87,4 +87,5 @@ export interface RecipeResult {
   resources: Resources;
   shipTypes: ShipType[];
   probability: number;
+  itemProbabilities?: Record<number, number>;
 } 
