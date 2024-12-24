@@ -84,6 +84,7 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
         // 4. 计算开发概率
         const results = await calculateProbabilities(resources, secretary, hqLevel, poolType);
         console.log('计算结果:', results);
+        console.log('失败原因:', results[0]?.failureReasons);
         
         // 5. 检查是否包含所有目标装备
         const targetResults = results.filter(result => {
@@ -101,8 +102,18 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
           // 计算总成功率（所有目标装备概率之和）
           const totalProbability = targetResults.reduce((sum, r) => sum + r.probability, 0);
           
-          // 计算开发失败率（从结果中获取）
-          const failureRate = results.find(r => !targetItemIds.has(Number(r.shipId)))?.probability || 0;
+          // 计算开发失败率（所有装备概率之和的剩余部分）
+          const allEquipmentsProbability = results.reduce((sum, r) => {
+            // 如果这个结果没有失败原因，说明是可以开发的装备
+            const hasFailureReason = results[0]?.failureReasons?.some(
+              f => f.itemName === r.itemName
+            );
+            return sum + (hasFailureReason ? 0 : r.probability);
+          }, 0);
+          
+          const failureRate = 100 - allEquipmentsProbability;
+          console.log('所有可开发装备概率:', allEquipmentsProbability);
+          console.log('计算得到的失败率:', failureRate);
           
           // 构建每个装备的概率映射
           const itemProbabilities: Record<number, number> = {};
