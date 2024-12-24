@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ThemeProvider } from 'next-themes';
-import { Language } from '../types/lottery';
-import Navigation from './Navigation';
-import { LanguageProvider } from '../contexts/LanguageContext';
+import { useState, useEffect } from "react";
+import { ThemeProvider } from "next-themes";
+import { Language } from "../types/lottery";
+import Navigation from "./Navigation";
+import { LanguageProvider } from "../contexts/LanguageContext";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('zh_cn');
+  const [language, setLanguage] = useState<Language>("zh_cn");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,13 +23,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <LanguageProvider language={language} setLanguage={setLanguage}>
         <div className="min-h-screen flex">
           <Navigation language={language} onLanguageChange={setLanguage} />
-          <div className="flex-1">
-            <div className="max-w-4xl mx-auto">
-              {children}
-            </div>
-          </div>
+          <div className="flex-1">{children}</div>
         </div>
       </LanguageProvider>
     </ThemeProvider>
   );
-} 
+}
