@@ -143,4 +143,6 @@ export interface Translation {
   gotResults: string;
   details: string;
   failureRate: string;
+  equipment: string;
+  probability: string;
 } 

@@ -325,10 +325,10 @@ export default function FormulaGenerator() {
                             <thead>
                               <tr className="border-b dark:border-gray-700">
                                 <th className="py-2 text-left font-medium text-gray-600 dark:text-gray-300">
-                                  装备
+                                  {t.equipment}
                                 </th>
                                 <th className="py-2 text-right font-medium text-gray-600 dark:text-gray-300 w-24">
-                                  概率
+                                  {t.probability}
                                 </th>
                               </tr>
                             </thead>

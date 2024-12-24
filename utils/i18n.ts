@@ -65,6 +65,8 @@ export const translations = {
     gotResults: '結果が{count}件見つかりました',
     details: '詳細',
     failureRate: '開発失敗',
+    equipment: '装備',
+    probability: '確率',
   },
   zh_cn: {
     title: 'Kancolle开发模拟器',
@@ -118,6 +120,8 @@ export const translations = {
     gotResults: '得到 {count} 个结果',
     details: '详情',
     failureRate: '开发失败',
+    equipment: '装备',
+    probability: '概率',
   },
   zh_tw: {
     title: 'Kancolle開發模擬器',
@@ -171,6 +175,8 @@ export const translations = {
     gotResults: '得到 {count} 個結果',
     details: '詳情',
     failureRate: '開發失敗',
+    equipment: '裝備',
+    probability: '概率',
   },
   en_us: {
     title: 'Kancolle Equipment Development Simulator',
@@ -224,6 +230,8 @@ export const translations = {
     gotResults: 'Found {count} results',
     details: 'Details',
     failureRate: 'Development Failed',
+    equipment: 'Equipment',
+    probability: 'Probability',
   }
 } as const;
 
