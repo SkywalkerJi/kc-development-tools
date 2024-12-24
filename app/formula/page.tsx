@@ -19,6 +19,7 @@ export default function FormulaGenerator() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [expandedRecipes, setExpandedRecipes] = useState<number[]>([]);
+  const [hqLevel, setHqLevel] = useState<number>(120);
 
   // 获取装备类型和装备列表
   const items = (itemsData.items as Item[])
@@ -53,7 +54,7 @@ export default function FormulaGenerator() {
     const selectedItemsData = items.filter((item) =>
       selectedItems.includes(item.id)
     );
-    const recipes = await generateRecipes(selectedItemsData);
+    const recipes = await generateRecipes(selectedItemsData, hqLevel);
     setRecipes(recipes);
     setIsCalculating(false);
   };
@@ -160,18 +161,37 @@ export default function FormulaGenerator() {
                     </span>
                   </span>
                 </div>
-                <button
-                  disabled={selectedItems.length === 0 || isCalculating}
-                  className={`px-4 py-2 rounded text-white min-w-[100px] ${
-                    selectedItems.length === 0
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : isCalculating
-                      ? "bg-blue-400"
-                      : "bg-blue-500 hover:bg-blue-600"
-                  }`}
-                >
-                  {isCalculating ? "计算中..." : t.calculate}
-                </button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">{t.hqLevel}:</span>
+                    <select
+                      value={hqLevel}
+                      onChange={(e) => setHqLevel(Number(e.target.value))}
+                      className="px-2 py-1.5 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
+                    >
+                      {[...Array(12)].map((_, i) => {
+                        const level = (i + 1) * 10;
+                        return (
+                          <option key={level} value={level}>
+                            {level}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <button
+                    disabled={selectedItems.length === 0 || isCalculating}
+                    className={`px-4 py-2 rounded text-white min-w-[100px] ${
+                      selectedItems.length === 0
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : isCalculating
+                        ? "bg-blue-400"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    }`}
+                  >
+                    {isCalculating ? "计算中..." : t.calculate}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -42,7 +42,7 @@ function arrayToResources(arr: number[]): Resources {
 }
 
 // 生成开发配方
-export async function generateRecipes(items: Item[]): Promise<RecipeResult[]> {
+export async function generateRecipes(items: Item[], hqLevel: number = 120): Promise<RecipeResult[]> {
   if (items.length === 0) {
     return [];
   }
@@ -82,7 +82,7 @@ export async function generateRecipes(items: Item[]): Promise<RecipeResult[]> {
 
       try {
         // 4. 计算开发概率
-        const results = await calculateProbabilities(resources, secretary, 120, poolType);
+        const results = await calculateProbabilities(resources, secretary, hqLevel, poolType);
         console.log('计算结果:', results);
         
         // 5. 检查是否包含目标装备
