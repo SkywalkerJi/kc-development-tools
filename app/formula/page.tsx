@@ -44,9 +44,9 @@ export default function FormulaGenerator() {
   };
 
   // 计算配方
-  const calculateRecipes = () => {
+  const calculateRecipes = async () => {
     const selectedItemsData = items.filter(item => selectedItems.includes(item.id));
-    const recipes = generateRecipes(selectedItemsData);
+    const recipes = await generateRecipes(selectedItemsData);
     setRecipes(recipes);
   };
 

@@ -1,96 +1,117 @@
-import { Item, Resources, ShipType, RecipeResult } from '../types/lottery';
+import { Item, ShipType, RecipeResult, Resources } from '../types/lottery';
+import { calculateProbabilities } from './lottery';
 
-// 根据装备类型确定可用的秘书舰类型
-function getAvailableShipTypes(items: Item[]): ShipType[] {
-  const types = new Set<ShipType>();
+// 资源优先级顺序：[燃料, 钢材, 弹药, 铝]
+const RESOURCE_LAYERS = [0, 2, 1, 3];
 
-  items.forEach(item => {
-    // 根据装备类型判断秘书舰类型
-    // 这里需要根据实际规则补充逻辑
-    switch (item.type) {
-      case 1: // 小口径主炮
-      case 2: // 中口径主炮
-      case 3: // 大口径主炮
-        types.add('gun');
-        break;
-      case 5: // 鱼雷
-      case 6: // 舰战
-        types.add('torp');
-        break;
-      case 7: // 舰攻
-      case 8: // 舰爆
-      case 9: // 舰侦
-        types.add('air');
-        break;
-      case 12: // 声纳
-      case 13: // 爆雷
-        types.add('sub');
-        break;
-      default:
-        // 其他装备类型需要根据实际规则补充
-        break;
+// 资源索引到奖池类型的映射
+const RESOURCE_TO_POOL: Record<number, 'fs' | 'am' | 'bx'> = {
+  0: 'fs', // 燃料
+  1: 'am', // 弹药
+  2: 'fs', // 钢材
+  3: 'bx'  // 铝
+};
+
+// 调整资源量以满足优先级要求
+function adjustResources(mins: number[], layer: number): number[] {
+  const materials = [...mins];
+  for (let i = 0; i < 4; i++) {
+    if (RESOURCE_LAYERS.indexOf(i) < RESOURCE_LAYERS.indexOf(layer)) {
+      // 如果当前资源优先级低于目标资源，且当前资源量大于等于目标资源量，则目标资源量+1
+      if (materials[i] >= materials[layer]) {
+        materials[layer] = materials[i] + 1;
+      }
+    } else {
+      // 如果当前资源优先级高于等于目标资源，且当前资源量大于目标资源量，则目标资源量调整为相同值
+      if (materials[i] > materials[layer]) {
+        materials[layer] = materials[i];
+      }
     }
-  });
-
-  return Array.from(types);
+  }
+  return materials;
 }
 
-// 根据分解值计算可能的资源投入
-function calculatePossibleResources(items: Item[]): Resources[] {
-  const recipes: Resources[] = [];
-
-  // 计算所有装备的分解值范围
-  const dismantleRanges = items.map(item => item.dismantle);
-
-  // 找出每种资源的最大值
-  const maxValues = dismantleRanges.reduce((acc, curr) => ({
-    fuel: Math.max(acc.fuel, curr[0] * 10),
-    ammo: Math.max(acc.ammo, curr[1] * 10),
-    steel: Math.max(acc.steel, curr[2] * 10),
-    bauxite: Math.max(acc.bauxite, curr[3] * 10),
-  }), { fuel: 0, ammo: 0, steel: 0, bauxite: 0 });
-
-  // 生成可能的资源组合
-  // 这里简化处理，实际应该根据更复杂的规则生成
-  recipes.push({
-    fuel: Math.min(300, Math.max(10, maxValues.fuel)),
-    ammo: Math.min(300, Math.max(10, maxValues.ammo)),
-    steel: Math.min(300, Math.max(10, maxValues.steel)),
-    bauxite: Math.min(300, Math.max(10, maxValues.bauxite)),
-  });
-
-  return recipes;
-}
-
-// 计算成功率
-function calculateProbability(items: Item[], recipe: Resources, shipType: ShipType): number {
-  // 这里需要实现实际的概率计算逻辑
-  // 当前返回一个示例值
-  return 10;
+// 将资源数组转换为Resources对象
+function arrayToResources(arr: number[]): Resources {
+  return {
+    fuel: arr[0],
+    ammo: arr[1],
+    steel: arr[2],
+    bauxite: arr[3]
+  };
 }
 
 // 生成开发配方
-export function generateRecipes(items: Item[]): RecipeResult[] {
-  const recipes: RecipeResult[] = [];
-  
-  // 获取可用的秘书舰类型
-  const shipTypes = getAvailableShipTypes(items);
-  
-  // 获取可能的资源组合
-  const possibleResources = calculatePossibleResources(items);
-  
-  // 生成所有可能的配方组合
-  possibleResources.forEach(resources => {
-    shipTypes.forEach(shipType => {
-      const probability = calculateProbability(items, resources, shipType);
-      
-      recipes.push({
-        resources,
-        shipTypes: [shipType],
-        probability,
-      });
-    });
+export async function generateRecipes(items: Item[]): Promise<RecipeResult[]> {
+  if (items.length === 0) {
+    return [];
+  }
+
+  console.log('开始生成配方，选中装备:', items.map(item => item.name.zh_cn));
+
+  // 1. 计算最低资源消耗
+  const mins = [10, 10, 10, 10];
+  items.forEach(item => {
+    for (let j = 0; j < 4; j++) {
+      if (item.dismantle[j] * 10 > mins[j]) {
+        mins[j] = item.dismantle[j] * 10;
+      }
+    }
   });
+
+  console.log('最低资源需求:', mins);
+
+  const validRecipes: RecipeResult[] = [];
+  const targetItemIds = new Set(items.map(item => item.id));
+
+  // 2. 遍历所有可能的秘书舰类型和资源组合
+  const secretaryTypes: ShipType[] = ['gun', 'torp', 'air', 'sub'];
   
-  return recipes;
+  for (let secretaryIndex = 0; secretaryIndex < secretaryTypes.length; secretaryIndex++) {
+    const secretary = secretaryTypes[secretaryIndex];
+    
+    // 3. 遍历资源优先级
+    for (let layerIndex = 0; layerIndex < 4; layerIndex++) {
+      const layer = RESOURCE_LAYERS[layerIndex];
+      const adjustedResources = adjustResources(mins, layer);
+      const resources = arrayToResources(adjustedResources);
+
+      // 强制设置最大资源类型
+      const poolType = RESOURCE_TO_POOL[layer];
+      console.log(`尝试组合 - 秘书舰类型: ${secretary}, 资源优先级: ${layer}, 奖池类型: ${poolType}, 资源:`, resources);
+
+      try {
+        // 4. 计算开发概率
+        const results = await calculateProbabilities(resources, secretary, 120, poolType);
+        console.log('计算结果:', results);
+        
+        // 5. 检查是否包含目标装备
+        const targetResults = results.filter(result => {
+          const itemId = Number(result.shipId);
+          return targetItemIds.has(itemId);
+        });
+
+        console.log('目标装备结果:', targetResults);
+
+        if (targetResults.length > 0) {
+          const probability = Math.min(...targetResults.map(r => r.probability));
+          console.log('找到有效配方，概率:', probability);
+          
+          // 7. 添加配方
+          validRecipes.push({
+            resources,
+            shipTypes: [secretary],
+            probability
+          });
+        }
+      } catch (error) {
+        console.error('计算概率时出错:', error);
+      }
+    }
+  }
+
+  console.log('生成的配方数量:', validRecipes.length);
+
+  // 8. 按概率降序排序
+  return validRecipes.sort((a, b) => b.probability - a.probability);
 } 

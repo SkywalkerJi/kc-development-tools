@@ -24,10 +24,11 @@ function checkResourceRequirements(resources: Resources, dismantle: number[]): b
 export async function calculateProbabilities(
   resources: Resources, 
   shipType: ShipType,
-  hqLevel: number = 120
+  hqLevel: number = 120,
+  forcedPoolType?: 'fs' | 'am' | 'bx'
 ): Promise<LotteryResult[]> {
   // 获取最高资源类型
-  const highestResource = getHighestResource(resources);
+  const highestResource = forcedPoolType || getHighestResource(resources);
   
   // 构建奖池名称（例如：gunFs, gunAm, gunBx）
   const poolKey = `${shipType}${highestResource.charAt(0).toUpperCase()}${highestResource.slice(1)}` as keyof typeof defaultData.pool[0];
