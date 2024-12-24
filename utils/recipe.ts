@@ -85,7 +85,7 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
         const results = await calculateProbabilities(resources, secretary, hqLevel, poolType);
         console.log('计算结果:', results);
         
-        // 5. 检查是否包含目标装备
+        // 5. 检查是否包含所有目标装备
         const targetResults = results.filter(result => {
           const itemId = Number(result.shipId);
           return targetItemIds.has(itemId);
@@ -93,9 +93,16 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
 
         console.log('目标装备结果:', targetResults);
 
-        if (targetResults.length > 0) {
-          const probability = Math.min(...targetResults.map(r => r.probability));
-          console.log('找到有效配方，概率:', probability);
+        // 确保找到了所有目标装备
+        const foundItemIds = new Set(targetResults.map(r => Number(r.shipId)));
+        const allTargetsFound = Array.from(targetItemIds).every(id => foundItemIds.has(id));
+
+        if (allTargetsFound) {
+          // 计算总成功率（所有目标装备概率之和）
+          const totalProbability = targetResults.reduce((sum, r) => sum + r.probability, 0);
+          
+          // 计算开发失败率（从结果中获取）
+          const failureRate = results.find(r => !targetItemIds.has(Number(r.shipId)))?.probability || 0;
           
           // 构建每个装备的概率映射
           const itemProbabilities: Record<number, number> = {};
@@ -107,8 +114,9 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
           validRecipes.push({
             resources,
             shipTypes: [secretary],
-            probability,
-            itemProbabilities
+            probability: totalProbability,
+            itemProbabilities,
+            failureRate
           });
         }
       } catch (error) {

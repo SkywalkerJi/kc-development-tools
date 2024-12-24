@@ -248,7 +248,7 @@ export default function Home() {
               <div className="flex flex-col p-2 bg-red-50 dark:bg-red-900/30 rounded">
                 <div className="flex justify-between dark:text-gray-100">
                   <span>{t.developmentFailed}</span>
-                  <span>{failureRate.toFixed(2)}%</span>
+                  <span>{failureRate}%</span>
                 </div>
                 {results[0]?.failureReasons && results[0].failureReasons.length > 0 && (
                   <div className="mt-2 text-sm text-gray-600">

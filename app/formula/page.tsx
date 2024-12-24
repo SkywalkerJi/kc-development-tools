@@ -271,7 +271,7 @@ export default function FormulaGenerator() {
                                 <tr key={itemId} className="border-b dark:border-gray-700 last:border-0">
                                   <td className="py-2">{getItemName(item, language)}</td>
                                   <td className="py-2 text-right font-medium">
-                                    {probability.toFixed(2)}%
+                                    {probability}%
                                   </td>
                                 </tr>
                               );
@@ -279,7 +279,7 @@ export default function FormulaGenerator() {
                             <tr className="border-t-2 dark:border-gray-600">
                               <td className="py-2 font-medium text-red-500">开发失败</td>
                               <td className="py-2 text-right font-medium text-red-500">
-                                {(100 - recipe.probability).toFixed(2)}%
+                                {recipe.failureRate}%
                               </td>
                             </tr>
                           </tbody>
