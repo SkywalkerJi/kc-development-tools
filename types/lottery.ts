@@ -89,4 +89,58 @@ export interface RecipeResult {
   probability: number;
   itemProbabilities?: Record<number, number>;
   failureRate: number;
+}
+
+export interface Translation {
+  title: string;
+  nav: {
+    simulator: string;
+    formula: string;
+    table: string;
+  };
+  resources: {
+    fuel: string;
+    steel: string;
+    ammo: string;
+    bauxite: string;
+  };
+  pools: {
+    gunFs: string;
+    gunAm: string;
+    gunBx: string;
+    torpFs: string;
+    torpAm: string;
+    torpBx: string;
+    airFs: string;
+    airAm: string;
+    airBx: string;
+    subFs: string;
+    subAm: string;
+    subBx: string;
+  };
+  secretary: string;
+  shipTypes: {
+    gun: string;
+    torp: string;
+    air: string;
+    sub: string;
+  };
+  shipTypeHelp: {
+    title: string;
+    gun: string;
+    torp: string;
+    air: string;
+    sub: string;
+  };
+  hqLevel: string;
+  calculate: string;
+  calculating: string;
+  resultTitle: string;
+  rarity: string;
+  minRequirement: string;
+  selectedItems: string;
+  recipeResults: string;
+  gotResults: string;
+  details: string;
+  failureRate: string;
 } 

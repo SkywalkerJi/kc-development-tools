@@ -61,6 +61,10 @@ export const translations = {
     selectItems: '装備を選択',
     recipeResults: '開発レシピ',
     allEquipments: '全ての開発可能装備を表示中',
+    selectedItems: '選択した装備',
+    gotResults: '結果が{count}件見つかりました',
+    details: '詳細',
+    failureRate: '開発失敗',
   },
   zh_cn: {
     title: 'Kancolle开发模拟器',
@@ -78,18 +82,18 @@ export const translations = {
     pools: {
       gunFs: '炮战系(燃料/钢材)',
       gunAm: '炮战系(弹药)',
-      gunBx: '炮战系(铝)',
+      gunBx: '炮战系(铝土)',
       torpFs: '水雷系(燃料/钢材)',
       torpAm: '水雷系(弹药)',
-      torpBx: '水雷系(铝)',
+      torpBx: '水雷系(铝土)',
       airFs: '空母系(燃料/钢材)',
       airAm: '空母系(弹药)',
-      airBx: '空母系(铝)',
+      airBx: '空母系(铝土)',
       subFs: '潜水系(燃料/钢材)',
       subAm: '潜水系(弹药)',
-      subBx: '潜水系(铝)'
+      subBx: '潜水系(铝土)'
     },
-    secretary: '秘书舰种',
+    secretary: '秘书舰种类',
     shipTypes: {
       gun: '炮战系',
       torp: '水雷系',
@@ -97,9 +101,9 @@ export const translations = {
       sub: '潜水系'
     },
     shipTypeHelp: {
-      title: '秘书舰种说明',
+      title: '秘书舰种类说明',
       gun: '炮战系：战舰(BB)、巡洋战舰(FBB)、重巡洋舰(CA)、工作舰(AR)',
-      torp: '水雷系：驱逐舰(DD)、海防舰(DE)、轻巡洋舰(CL)、重雷装巡洋舰(CLT)、练习巡洋舰(CT)、补给舰(AO，宗谷特务舰形态除外)',
+      torp: '水雷系：驱逐舰(DD)、海防舰(DE)、轻巡洋舰(CL)、重雷装巡洋舰(CLT)、练习巡洋舰(CT)、补给舰(AO，除宗谷特务舰形态)',
       air: '空母系：正规空母(CV)、装甲空母(CVB)、轻空母(CVL)、航空战舰(BBV)、航空巡洋舰(CAV)、水上机母舰(AV)、登陆舰(LHA)、宗谷特务舰形态',
       sub: '潜水系：潜水舰(SS)、潜水空母(SSV)、潜水母舰(AS)'
     },
@@ -108,20 +112,12 @@ export const translations = {
     calculating: '计算中...',
     resultTitle: '开发概率表',
     rarity: '稀有度',
-    minRequirement: '最低需求',
-    developmentFailed: '开发失败',
-    failureReasons: '失败原因',
-    reasons: {
-      levelInsufficient: '司令部等级不足',
-      resourceInsufficient: '资源不足',
-      itemNotFound: '装备数据未找到'
-    },
-    requiredLevel: '需要司令部等级',
-    requiredResources: '需要资源',
-    selectType: '选择装备类型',
-    selectItems: '选择装备',
+    minRequirement: '所需资源',
+    selectedItems: '已选择装备',
     recipeResults: '开发配方',
-    allEquipments: '显示所有可开发装备',
+    gotResults: '得到 {count} 个结果',
+    details: '详情',
+    failureRate: '开发失败',
   },
   zh_tw: {
     title: 'Kancolle開發模擬器',
@@ -139,18 +135,18 @@ export const translations = {
     pools: {
       gunFs: '砲戰系(燃料/鋼材)',
       gunAm: '砲戰系(彈藥)',
-      gunBx: '砲戰系(鋁)',
+      gunBx: '砲戰系(鋁土)',
       torpFs: '水雷系(燃料/鋼材)',
       torpAm: '水雷系(彈藥)',
-      torpBx: '水雷系(鋁)',
+      torpBx: '水雷系(鋁土)',
       airFs: '空母系(燃料/鋼材)',
       airAm: '空母系(彈藥)',
-      airBx: '空母系(鋁)',
+      airBx: '空母系(鋁土)',
       subFs: '潛水系(燃料/鋼材)',
       subAm: '潛水系(彈藥)',
-      subBx: '潛水系(鋁)'
+      subBx: '潛水系(鋁土)'
     },
-    secretary: '秘書艦種',
+    secretary: '秘書艦種類',
     shipTypes: {
       gun: '砲戰系',
       torp: '水雷系',
@@ -158,9 +154,9 @@ export const translations = {
       sub: '潛水系'
     },
     shipTypeHelp: {
-      title: '秘書艦種說明',
+      title: '秘書艦種類說明',
       gun: '砲戰系：戰艦(BB)、巡洋戰艦(FBB)、重巡洋艦(CA)、工作艦(AR)',
-      torp: '水雷系：驅逐艦(DD)、海防艦(DE)、輕巡洋艦(CL)、重雷裝巡洋艦(CLT)、練習巡洋艦(CT)、補給艦(AO，宗谷特務艦形態除外)',
+      torp: '水雷系：驅逐艦(DD)、海防艦(DE)、輕巡洋艦(CL)、重雷裝巡洋艦(CLT)、練習巡洋艦(CT)、補給艦(AO，除宗谷特務艦形態)',
       air: '空母系：正規空母(CV)、裝甲空母(CVB)、輕空母(CVL)、航空戰艦(BBV)、航空巡洋艦(CAV)、水上機母艦(AV)、登陸艦(LHA)、宗谷特務艦形態',
       sub: '潛水系：潛水艦(SS)、潛水空母(SSV)、潛水母艦(AS)'
     },
@@ -169,20 +165,12 @@ export const translations = {
     calculating: '計算中...',
     resultTitle: '開發概率表',
     rarity: '稀有度',
-    minRequirement: '最低需求',
-    developmentFailed: '開發失敗',
-    failureReasons: '失敗原因',
-    reasons: {
-      levelInsufficient: '司令部等級不足',
-      resourceInsufficient: '資源不足',
-      itemNotFound: '裝備數據未找到'
-    },
-    requiredLevel: '需要司令部等級',
-    requiredResources: '需要資源',
-    selectType: '選擇裝備類型',
-    selectItems: '選擇裝備',
+    minRequirement: '所需資源',
+    selectedItems: '已選擇裝備',
     recipeResults: '開發配方',
-    allEquipments: '顯示所有可開發裝備',
+    gotResults: '得到 {count} 個結果',
+    details: '詳情',
+    failureRate: '開發失敗',
   },
   en_us: {
     title: 'Kancolle Equipment Development Simulator',
@@ -231,19 +219,11 @@ export const translations = {
     resultTitle: 'Development Probability',
     rarity: 'Rarity',
     minRequirement: 'Minimum Required',
-    developmentFailed: 'Development Failed',
-    failureReasons: 'Failure Reasons',
-    reasons: {
-      levelInsufficient: 'HQ Level Insufficient',
-      resourceInsufficient: 'Resources Insufficient',
-      itemNotFound: 'Equipment Data Not Found'
-    },
-    requiredLevel: 'Required HQ Level',
-    requiredResources: 'Required Resources',
-    selectType: 'Select Equipment Type',
-    selectItems: 'Select Equipment',
+    selectedItems: 'Selected Equipment',
     recipeResults: 'Development Recipes',
-    allEquipments: 'Showing all developable equipment',
+    gotResults: 'Found {count} results',
+    details: 'Details',
+    failureRate: 'Development Failed',
   }
 } as const;
 
