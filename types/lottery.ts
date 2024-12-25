@@ -89,6 +89,10 @@ export interface RecipeResult {
   probability: number;
   itemProbabilities?: Record<number, number>;
   failureRate: number;
+  secretaryInfo?: {
+    id: number;
+    shortName: string;
+  };
 }
 
 export interface Translation {

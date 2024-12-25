@@ -88,4 +88,18 @@ export function applySecretaryBonuses(
     }
     return prob;
   });
+}
+
+export function getSecretaryOptions(): SecretaryOption[] {
+  return [
+    { id: -1, shortName: '通常', shipType: 'gun' },
+    { id: -2, shortName: '通常', shipType: 'torp' },
+    { id: -3, shortName: '通常', shipType: 'air' },
+    { id: -4, shortName: '通常', shipType: 'sub' },
+    ...typedSecretaryBonusData.map(secretary => ({
+      id: secretary.id,
+      shortName: secretary.shortName,
+      shipType: secretary.shipType
+    }))
+  ];
 } 

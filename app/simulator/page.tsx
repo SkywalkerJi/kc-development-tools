@@ -7,6 +7,7 @@ import { getTranslation } from "../../utils/i18n";
 import { HelpModal } from "../../components/HelpModal";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useSearchParams } from "next/navigation";
+import { getSecretaryOptions } from "../../utils/secretary";
 
 export default function Simulator() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -30,6 +31,10 @@ export default function Simulator() {
   const [hqLevel, setHqLevel] = useState<number>(120);
   const [results, setResults] = useState<LotteryResult[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [secretaryId, setSecretaryId] = useState<number>(0);
+
+  // 获取特殊秘书舰列表
+  const secretaryOptions = getSecretaryOptions();
 
   // 从URL参数读取并设置初始值
   useEffect(() => {
@@ -87,7 +92,8 @@ export default function Simulator() {
         resourcesToUse,
         secretaryToUse,
         levelToUse,
-        isLandBasedAircraftCondition // 传递陆攻条件
+        isLandBasedAircraftCondition,
+        secretaryId
       );
       setResults(results);
     } catch (error) {
@@ -207,14 +213,21 @@ export default function Simulator() {
                 </button>
               </div>
               <select
-                value={shipType}
-                onChange={(e) => setShipType(e.target.value as ShipType)}
+                value={secretaryId}
+                onChange={(e) => {
+                  const option = secretaryOptions.find(opt => opt.id === Number(e.target.value));
+                  if (option) {
+                    setSecretaryId(option.id);
+                    setShipType(option.shipType);
+                  }
+                }}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
               >
-                <option value="gun">{t.shipTypes.gun}</option>
-                <option value="torp">{t.shipTypes.torp}</option>
-                <option value="air">{t.shipTypes.air}</option>
-                <option value="sub">{t.shipTypes.sub}</option>
+                {secretaryOptions.map(option => (
+                  <option key={option.id} value={option.id}>
+                    {option.shortName} ({t.shipTypes[option.shipType as keyof typeof t.shipTypes]})
+                  </option>
+                ))}
               </select>
             </div>
             <div>

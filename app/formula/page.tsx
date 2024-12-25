@@ -302,9 +302,9 @@ export default function FormulaGenerator() {
                           </div>
                           <div className="text-gray-500">
                             {t.secretary}:{" "}
-                            {recipe.shipTypes
-                              .map((type) => t.shipTypes[type])
-                              .join("/")}
+                            {recipe.secretaryInfo?.shortName
+                              ? `${recipe.secretaryInfo.shortName} (${t.shipTypes[recipe.shipTypes[0]]})`
+                              : recipe.shipTypes.map((type) => t.shipTypes[type]).join("/")}
                           </div>
                         </div>
                         <div className="flex items-center gap-4">

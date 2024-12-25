@@ -38,7 +38,8 @@ export const calculateProbabilities = async (
   resources: Resources,
   secretary: ShipType,
   hqLevel: number,
-  isLandBasedAircraftCondition: boolean = false
+  isLandBasedAircraftCondition: boolean = false,
+  secretaryId: number = 0
 ): Promise<LotteryResult[]> => {
   // 获取最高资源类型
   const highestResource = getPoolType(resources);

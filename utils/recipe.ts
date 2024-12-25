@@ -1,5 +1,6 @@
 import { Item, ShipType, RecipeResult, Resources } from '../types/lottery';
 import { calculateProbabilities } from './lottery';
+import { getSecretaryOptions } from './secretary';
 
 // 资源优先级顺序：[燃料, 钢材, 弹药, 铝]
 const RESOURCE_LAYERS = [0, 2, 1, 3];
@@ -64,8 +65,8 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
   const validRecipes: RecipeResult[] = [];
   const targetItemIds = new Set(items.map(item => item.id));
 
-  // 2. 遍历所有可能的秘书舰类型和资源组合
-  const secretaryTypes: ShipType[] = ['gun', 'torp', 'air', 'sub'];
+  // 获取所有可用的秘书舰选项
+  const secretaryOptions = getSecretaryOptions();
   
   // 检查是否包含九六式陆攻（ID 168）
   const hasLandBasedAircraft = items.some(item => item.id === 168);
@@ -87,30 +88,26 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
     }
     
     // 只使用空母系秘书舰
-    secretaryTypes.length = 0;
-    secretaryTypes.push('air');
+    secretaryOptions.length = 0;
+    secretaryOptions.push(...getSecretaryOptions().filter(opt => opt.shipType === 'air'));
   }
 
-  for (let secretaryIndex = 0; secretaryIndex < secretaryTypes.length; secretaryIndex++) {
-    const secretary = secretaryTypes[secretaryIndex];
-    
+  // 遍历所有秘书舰选项
+  for (const secretaryOption of secretaryOptions) {
     // 3. 遍历资源优先级
     for (let layerIndex = 0; layerIndex < 4; layerIndex++) {
       const layer = RESOURCE_LAYERS[layerIndex];
       const adjustedResources = adjustResources(mins, layer);
       const resources = arrayToResources(adjustedResources);
 
-      // 强制设置最大资源类型
-      const poolType = RESOURCE_TO_POOL[layer];
-      console.log(`尝试组合 - 秘书舰类型: ${secretary}, 资源优先级: ${layer}, 奖池类型: ${poolType}, 资源:`, resources);
-
       try {
         // 4. 计算开发概率
         const results = await calculateProbabilities(
-          resources, 
-          secretary, 
+          resources,
+          secretaryOption.shipType,
           hqLevel,
-          hasLandBasedAircraft && secretary === 'air'  // 传递陆攻条件
+          hasLandBasedAircraft && secretaryOption.shipType === 'air',
+          secretaryOption.id
         );
         console.log('计算结果:', results);
         console.log('失败原因:', results[0]?.failureReasons);
@@ -153,10 +150,14 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
           // 7. 添加配方
           validRecipes.push({
             resources,
-            shipTypes: [secretary],
+            shipTypes: [secretaryOption.shipType],
             probability: totalProbability,
             itemProbabilities,
-            failureRate
+            failureRate,
+            secretaryInfo: {  // 添加秘书舰信息
+              id: secretaryOption.id,
+              shortName: secretaryOption.shortName
+            }
           });
         }
       } catch (error) {
