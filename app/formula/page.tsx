@@ -46,7 +46,9 @@ export default function FormulaGenerator() {
   const recipeResultsRef = useRef<HTMLDivElement>(null);
 
   // 获取装备类型和装备列表
-  const poolItemIds = new Set((poolData as PoolData).pool.map(item => item.id));
+  const poolItemIds = new Set(
+    (poolData as PoolData).pool.map((item) => item.id)
+  );
   const items = (itemsData.items as Item[])
     .filter((item) => poolItemIds.has(item.id))
     .sort((a, b) => a.rarity - b.rarity);
@@ -96,7 +98,7 @@ export default function FormulaGenerator() {
     calculateRecipes();
     // 滚动到结果区域
     if (recipeResultsRef.current) {
-      recipeResultsRef.current.scrollIntoView({ behavior: 'smooth' });
+      recipeResultsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -108,6 +110,7 @@ export default function FormulaGenerator() {
       setRecipes([]);
       setRecipeCount(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedItems]);
 
   // 处理配方展开/收起
@@ -177,12 +180,23 @@ export default function FormulaGenerator() {
                       {hoveredItem === item.id && (
                         <div className="absolute z-10 bg-gray-900 text-white p-2 rounded shadow-lg text-xs bottom-full left-1/2 transform -translate-x-1/2 mb-1 whitespace-nowrap">
                           <div className="flex flex-col gap-1">
-                            <div>{t.rarity}: {item.rarity} ({item.rarity * 10} {t.hqLevel})</div>
+                            <div>
+                              {t.rarity}: {item.rarity} ({item.rarity * 10}{" "}
+                              {t.hqLevel})
+                            </div>
                             <div className="flex gap-1">
-                              <span>{t.resources.fuel}: {item.dismantle[0] * 10}</span>
-                              <span>{t.resources.ammo}: {item.dismantle[1] * 10}</span>
-                              <span>{t.resources.steel}: {item.dismantle[2] * 10}</span>
-                              <span>{t.resources.bauxite}: {item.dismantle[3] * 10}</span>
+                              <span>
+                                {t.resources.fuel}: {item.dismantle[0] * 10}
+                              </span>
+                              <span>
+                                {t.resources.ammo}: {item.dismantle[1] * 10}
+                              </span>
+                              <span>
+                                {t.resources.steel}: {item.dismantle[2] * 10}
+                              </span>
+                              <span>
+                                {t.resources.bauxite}: {item.dismantle[3] * 10}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -242,7 +256,9 @@ export default function FormulaGenerator() {
                         : "bg-blue-500 hover:bg-blue-600"
                     }`}
                   >
-                    {isCalculating ? t.calculating : t.gotResults.replace('{count}', recipeCount.toString())}
+                    {isCalculating
+                      ? t.calculating
+                      : t.gotResults.replace("{count}", recipeCount.toString())}
                   </button>
                 </div>
               </div>
@@ -253,7 +269,7 @@ export default function FormulaGenerator() {
           <div className="space-y-2">
             {recipes.length > 0 && (
               <>
-                <h2 
+                <h2
                   ref={recipeResultsRef}
                   className="text-xl font-bold text-gray-900 dark:text-gray-100"
                 >
