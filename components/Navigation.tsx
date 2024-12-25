@@ -17,7 +17,8 @@ export default function Navigation({ language, onLanguageChange }: {
   const links = [
     { href: '/simulator', label: t.nav.simulator },
     { href: '/formula', label: t.nav.formula },
-    { href: '/table', label: t.nav.table }
+    { href: '/table', label: t.nav.table },
+    { href: '/secretary-editor', label: '特殊秘书舰规则' }
   ];
 
   return (

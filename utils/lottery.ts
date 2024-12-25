@@ -8,6 +8,7 @@ import {
 } from "../types/lottery";
 import poolData from "../db/pool_lowdb.json";
 import itemsData from "../db/items.json";
+import { getPoolType, getSecretaryBonus, applySecretaryBonuses } from "./secretary";
 
 // 配置数据库
 const defaultData: Pool = poolData;
@@ -35,10 +36,11 @@ export async function calculateProbabilities(
   resources: Resources,
   shipType: ShipType,
   hqLevel: number = 120,
+  secretaryId: number = 0,
   forcedPoolType?: "fs" | "am" | "bx"
 ): Promise<LotteryResult[]> {
   // 获取最高资源类型
-  const highestResource = forcedPoolType || getHighestResource(resources);
+  const highestResource = forcedPoolType || getPoolType(resources);
 
   // 构建奖池名称（例如：gunFs, gunAm, gunBx）
   const poolKey = `${shipType}${highestResource
@@ -50,22 +52,37 @@ export async function calculateProbabilities(
   const results: LotteryResult[] = [];
   const failureReasons: FailureReason[] = [];
 
+  // 获取特殊秘书舰的概率调整
+  const secretaryAdjustments = getSecretaryBonus(
+    secretaryId,
+    shipType,
+    highestResource
+  );
+
   // 直接使用奖池中的数值作为百分比
-  defaultData.pool.forEach((item) => {
-    const probability = Number(item[poolKey]) || 0;
-    if (probability > 0) {
-      const itemDetails = getItemDetails(item.id);
+  let probabilities = defaultData.pool.map(item => ({
+    shipId: item.id,
+    probability: Number(item[poolKey]) || 0
+  }));
+
+  // 应用特殊秘书舰的概率调整
+  probabilities = applySecretaryBonuses(probabilities, secretaryAdjustments);
+
+  // 处理每个装备的概率
+  for (const prob of probabilities) {
+    if (prob.probability > 0) {
+      const itemDetails = getItemDetails(prob.shipId);
 
       // 如果找不到装备详情，跳过该装备
       if (!itemDetails) {
         failureReasons.push({
-          itemName: `装备${item.id}`,
+          itemName: `装备${prob.shipId}`,
           reason: "itemNotFound",
         });
-        return;
+        continue;
       }
 
-      const itemName = itemDetails.name.zh_cn || `装备${item.id}`;
+      const itemName = itemDetails.name.zh_cn || `装备${prob.shipId}`;
       const requiredResources = {
         fuel: itemDetails.dismantle[0] * 10,
         ammo: itemDetails.dismantle[1] * 10,
@@ -80,7 +97,7 @@ export async function calculateProbabilities(
           reason: "levelInsufficient",
           requiredLevel: itemDetails.rarity * 10,
         });
-        return;
+        continue;
       }
 
       // 检查资源要求
@@ -90,19 +107,19 @@ export async function calculateProbabilities(
           reason: "resourceInsufficient",
           requiredResources,
         });
-        return;
+        continue;
       }
 
       results.push({
-        poolName: `${poolKey}(${item.id})`,
-        probability: probability,
-        shipId: item.id,
+        poolName: `${poolKey}(${prob.shipId})`,
+        probability: prob.probability,
+        shipId: prob.shipId,
         itemName,
         rarity: itemDetails.rarity,
         requiredResources,
       });
     }
-  });
+  }
 
   // 按概率降序排序
   results.sort((a, b) => b.probability - a.probability);
@@ -121,35 +138,4 @@ export async function calculateProbabilities(
   }
 
   return results;
-}
-
-// 获取最高资源类型
-function getHighestResource(resources: Resources): "fs" | "am" | "bx" {
-  const { fuel, steel, ammo, bauxite } = resources;
-
-  // 创建资源值数组
-  const resourceValues = [
-    { type: "fuel", value: fuel },
-    { type: "steel", value: steel },
-    { type: "ammo", value: ammo },
-    { type: "bauxite", value: bauxite },
-  ];
-
-  // 找出最高值的资源类型
-  const maxResource = resourceValues.reduce((max, current) =>
-    current.value > max.value ? current : max
-  );
-
-  // 根据最高资源类型返回对应的池类型
-  switch (maxResource.type) {
-    case "fuel":
-    case "steel":
-      return "fs";
-    case "ammo":
-      return "am";
-    case "bauxite":
-      return "bx";
-    default:
-      return "fs"; // 默认返回 fs
-  }
 }
