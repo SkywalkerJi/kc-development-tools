@@ -32,13 +32,21 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const updatedSecretary = await request.json();
+    const updatedData = await request.json();
+    
+    // 如果是数组，说明是批量更新（排序操作）
+    if (Array.isArray(updatedData)) {
+      await fs.writeFile(secretaryBonusPath, JSON.stringify(updatedData, null, 2));
+      return NextResponse.json(updatedData);
+    }
+    
+    // 单个记录更新
     const currentData = await fs.readFile(secretaryBonusPath, 'utf8');
     const secretaries = JSON.parse(currentData);
     
-    const index = secretaries.findIndex((s: any) => s.id === updatedSecretary.id);
+    const index = secretaries.findIndex((s: any) => s.id === updatedData.id);
     if (index !== -1) {
-      secretaries[index] = updatedSecretary;
+      secretaries[index] = updatedData;
       await fs.writeFile(secretaryBonusPath, JSON.stringify(secretaries, null, 2));
     }
     

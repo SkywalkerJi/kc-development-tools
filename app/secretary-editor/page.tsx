@@ -102,17 +102,18 @@ export default function SecretaryEditor() {
     const newSecretaries = [...secretaries];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     
-    // 交换order值
-    const tempOrder = newSecretaries[index].order;
-    newSecretaries[index].order = newSecretaries[targetIndex].order;
-    newSecretaries[targetIndex].order = tempOrder;
-
     // 交换位置
     [newSecretaries[index], newSecretaries[targetIndex]] = 
     [newSecretaries[targetIndex], newSecretaries[index]];
 
-    setSecretaries(newSecretaries);
-    handleSaveAll(newSecretaries);
+    // 更新所有记录的 order 字段
+    const updatedSecretaries = newSecretaries.map((secretary, idx) => ({
+      ...secretary,
+      order: idx
+    }));
+
+    setSecretaries(updatedSecretaries);
+    handleSaveAll(updatedSecretaries);
   };
 
   // 导出JSON文件
