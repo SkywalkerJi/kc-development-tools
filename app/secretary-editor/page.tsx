@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Select, { SingleValue } from 'react-select';
 import { SecretaryBonus, ShipType } from '../../utils/secretary';
 import poolData from '../../db/pool_lowdb.json';
 import itemsData from '../../db/items.json';
@@ -15,16 +16,21 @@ function getItemName(itemId: number): string {
   return item?.name?.zh_cn || `装备${itemId}`;
 }
 
+interface ItemOption {
+  value: number;
+  label: string;
+}
+
 // 获取可用的装备列表
-function getAvailableItems(): { id: number; name: string }[] {
+function getAvailableItems(): ItemOption[] {
   const items = new Set<number>();
   Object.values(poolData.pool).forEach(item => {
     items.add(item.id);
   });
   return Array.from(items).map(id => ({
-    id,
-    name: getItemName(id)
-  })).sort((a, b) => a.id - b.id);
+    value: id,
+    label: getItemName(id)
+  })).sort((a, b) => a.value - b.value);
 }
 
 export default function SecretaryEditor() {
@@ -146,7 +152,7 @@ export default function SecretaryEditor() {
         ...newBonuses[bonusIndex],
         adjustments: [
           ...newBonuses[bonusIndex].adjustments,
-          { itemId: availableItems[0].id, value: 0 }
+          { itemId: availableItems[0].value, value: 0 }
         ]
       };
       setEditingSecretary({ ...editingSecretary, bonuses: newBonuses });
@@ -209,18 +215,6 @@ export default function SecretaryEditor() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">名称</label>
-              <input
-                type="text"
-                value={editingSecretary.name}
-                onChange={e => setEditingSecretary({
-                  ...editingSecretary,
-                  name: e.target.value
-                })}
-                className="border p-2 rounded"
-              />
-            </div>
-            <div>
               <label className="block text-sm font-medium mb-1">简称</label>
               <input
                 type="text"
@@ -228,6 +222,18 @@ export default function SecretaryEditor() {
                 onChange={e => setEditingSecretary({
                   ...editingSecretary,
                   shortName: e.target.value
+                })}
+                className="border p-2 rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">名称</label>
+              <input
+                type="text"
+                value={editingSecretary.name}
+                onChange={e => setEditingSecretary({
+                  ...editingSecretary,
+                  name: e.target.value
                 })}
                 className="border p-2 rounded"
               />
@@ -276,8 +282,8 @@ export default function SecretaryEditor() {
                   >
                     {POOL_TYPES.map(type => (
                       <option key={type} value={type}>
-                        {type === 'fs' ? '燃料/钢材' :
-                         type === 'am' ? '弹药' : '铝'}
+                        {type === 'fs' ? '燃料/钢材开发' :
+                         type === 'am' ? '弹药开发' : '铝开发'}
                       </option>
                     ))}
                   </select>
@@ -308,24 +314,31 @@ export default function SecretaryEditor() {
                   {bonus.adjustments.map((adj, adjIndex) => (
                     <tr key={adjIndex}>
                       <td className="py-2">
-                        <select
-                          value={adj.itemId}
-                          onChange={e => {
-                            const newBonuses = [...editingSecretary.bonuses];
-                            newBonuses[bonusIndex].adjustments[adjIndex].itemId = Number(e.target.value);
-                            setEditingSecretary({
-                              ...editingSecretary,
-                              bonuses: newBonuses
-                            });
+                        <Select<ItemOption>
+                          value={availableItems.find(item => item.value === adj.itemId)}
+                          onChange={(option: SingleValue<ItemOption>) => {
+                            if (option) {
+                              const newBonuses = [...editingSecretary.bonuses];
+                              newBonuses[bonusIndex].adjustments[adjIndex].itemId = option.value;
+                              setEditingSecretary({
+                                ...editingSecretary,
+                                bonuses: newBonuses
+                              });
+                            }
                           }}
-                          className="border p-2 rounded w-full"
-                        >
-                          {availableItems.map(item => (
-                            <option key={item.id} value={item.id}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
+                          options={availableItems}
+                          isSearchable={true}
+                          placeholder="搜索装备..."
+                          noOptionsMessage={() => "没有找到匹配的装备"}
+                          className="w-full"
+                          classNames={{
+                            control: () => "border rounded",
+                            menu: () => "bg-white shadow-lg rounded mt-1",
+                            option: (state: { isFocused: boolean; isSelected: boolean }) => 
+                              `px-3 py-2 ${state.isFocused ? 'bg-blue-50' : 'bg-white'} 
+                               ${state.isSelected ? 'bg-blue-100' : ''}`
+                          }}
+                        />
                       </td>
                       <td className="py-2">
                         <input
@@ -394,8 +407,8 @@ export default function SecretaryEditor() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">名称</th>
               <th className="px-4 py-2 text-left">简称</th>
+              <th className="px-4 py-2 text-left">名称</th>
               <th className="px-4 py-2 text-left">舰种</th>
               <th className="px-4 py-2 text-left">规则数</th>
               <th className="px-4 py-2 text-left">操作</th>
@@ -405,8 +418,8 @@ export default function SecretaryEditor() {
             {secretaries.map((secretary, index) => (
               <tr key={secretary.id} className="border-t">
                 <td className="px-4 py-2">{secretary.id}</td>
-                <td className="px-4 py-2">{secretary.name}</td>
                 <td className="px-4 py-2">{secretary.shortName}</td>
+                <td className="px-4 py-2">{secretary.name}</td>
                 <td className="px-4 py-2">
                   {secretary.shipType === 'gun' ? '炮战系' :
                    secretary.shipType === 'torp' ? '水雷系' :

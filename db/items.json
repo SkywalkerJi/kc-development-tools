@@ -54066,6 +54066,301 @@
       ],
       "time_modified": 1709751593050,
       "illust_version": 1
+    },
+    {
+      "id": 541,
+      "fakeData":true,
+      "rarity": 2,
+      "type": 20,
+      "name": {
+        "ja_jp": "SBD(Yellow Wings)",
+        "ja_kana": "",
+        "ja_romaji": "",
+        "zh_cn": "SBD(Yellow Wings)",
+        "en_us": "SBD(Yellow Wings)"
+      },
+      "stat": {
+        "fire": 1,
+        "torpedo": 0,
+        "bomb": 6,
+        "asw": 3,
+        "aa": 2,
+        "armor": 0,
+        "evasion": 2,
+        "hit": 1,
+        "los": 2,
+        "range": 0,
+        "distance": 4,
+        "cost": 5
+      },
+      "dismantle": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "craftable": true,
+      "improvable": true,
+      "time_created": 1479497020529,
+      "_id": "XhCxrBRjkiiXtX42",
+      "time_modified": 1709751592942,
+      "type_ingame": [
+        3,
+        5,
+        7,
+        7,
+        21
+      ],
+      "default_equipped_on": [
+        438,
+        603,
+        704,
+        931
+      ],
+      "illust_version": 3,
+      "upgrade_to": [
+        [
+          419,
+          0
+        ]
+      ],
+      "improvement": [
+        {
+          "upgrade": [
+            419,
+            0
+          ],
+          "req": [
+            [
+              [
+                false,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false
+              ],
+              [
+                603,
+                704
+              ]
+            ],
+            [
+              [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              [
+                433
+              ]
+            ],
+            [
+              [
+                true,
+                true,
+                false,
+                false,
+                false,
+                true,
+                true
+              ],
+              [
+                438,
+                545,
+                550
+              ]
+            ]
+          ],
+          "resource": [
+            [
+              180,
+              250,
+              0,
+              330
+            ],
+            [
+              3,
+              4,
+              2,
+              2,
+              [
+                [
+                  23,
+                  1
+                ]
+              ]
+            ],
+            [
+              4,
+              5,
+              2,
+              4,
+              [
+                [
+                  23,
+                  2
+                ]
+              ]
+            ],
+            [
+              5,
+              8,
+              4,
+              6,
+              [
+                [
+                  198,
+                  1
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "upgrade_for": [
+        419
+      ]
+    },
+    {
+      "id": 542,
+      "fakeData":true,
+      "rarity": 2,
+      "type": 19,
+      "name": {
+        "ja_jp": "TBD(Yellow Wings)",
+        "ja_kana": "",
+        "ja_romaji": "",
+        "zh_cn": "TBD(Yellow Wings)",
+        "en_us": ""
+      },
+      "stat": {
+        "fire": 2,
+        "torpedo": 3,
+        "bomb": 0,
+        "asw": 4,
+        "aa": 0,
+        "armor": 0,
+        "evasion": 0,
+        "hit": 1,
+        "los": 1,
+        "range": 0,
+        "distance": 3,
+        "cost": 3
+      },
+      "dismantle": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "craftable": true,
+      "improvable": true,
+      "time_created": 1501258224384,
+      "_id": "w0Na5vTcHQHthUI2",
+      "time_modified": 1709751593032,
+      "type_ingame": [
+        3,
+        5,
+        8,
+        8,
+        28
+      ],
+      "default_equipped_on": [
+        515,
+        393,
+        885
+      ],
+      "illust_version": 1,
+      "upgrade_to": [
+        [
+          243,
+          0
+        ]
+      ],
+      "improvement": [
+        {
+          "upgrade": [
+            243,
+            0
+          ],
+          "req": [
+            [
+              [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              [
+                515,
+                393
+              ]
+            ]
+          ],
+          "resource": [
+            [
+              90,
+              280,
+              0,
+              210
+            ],
+            [
+              4,
+              5,
+              2,
+              2,
+              [
+                [
+                  16,
+                  1
+                ]
+              ]
+            ],
+            [
+              5,
+              9,
+              3,
+              5,
+              [
+                [
+                  17,
+                  1
+                ]
+              ]
+            ],
+            [
+              12,
+              18,
+              6,
+              9,
+              [
+                [
+                  18,
+                  2
+                ],
+                [
+                  "consumable_70",
+                  1
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "upgrade_for": [
+        424,
+        249,
+        425
+      ]
     }
   ]
 }
