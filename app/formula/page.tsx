@@ -175,8 +175,16 @@ export default function FormulaGenerator() {
                         {getItemName(item, language)}
                       </button>
                       {hoveredItem === item.id && (
-                        <div className="absolute z-10 bg-gray-900 text-white p-2 rounded shadow-lg text-xs -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                          {t.rarity}: {item.rarity}
+                        <div className="absolute z-10 bg-gray-900 text-white p-2 rounded shadow-lg text-xs bottom-full left-1/2 transform -translate-x-1/2 mb-1 whitespace-nowrap">
+                          <div className="flex flex-col gap-1">
+                            <div>{t.rarity}: {item.rarity} ({item.rarity * 10} {t.hqLevel})</div>
+                            <div className="flex gap-1">
+                              <span>{t.resources.fuel}: {item.dismantle[0] * 10}</span>
+                              <span>{t.resources.ammo}: {item.dismantle[1] * 10}</span>
+                              <span>{t.resources.steel}: {item.dismantle[2] * 10}</span>
+                              <span>{t.resources.bauxite}: {item.dismantle[3] * 10}</span>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
