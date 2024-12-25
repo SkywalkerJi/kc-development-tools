@@ -20,6 +20,12 @@ export default function Simulator() {
     ammo: 10,
     bauxite: 10,
   });
+  const [tempInputs, setTempInputs] = useState<{[key: string]: string}>({
+    fuel: "10",
+    steel: "10",
+    ammo: "10",
+    bauxite: "10",
+  });
   const [shipType, setShipType] = useState<ShipType>("gun");
   const [hqLevel, setHqLevel] = useState<number>(120);
   const [results, setResults] = useState<LotteryResult[]>([]);
@@ -86,9 +92,14 @@ export default function Simulator() {
   };
 
   const handleResourceChange = (key: keyof Resources, value: string) => {
-    const numValue =
-      value === "" ? 10 : Math.min(300, Math.max(10, parseInt(value) || 10));
-    setResources((prev) => ({ ...prev, [key]: numValue }));
+    setTempInputs(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleResourceBlur = (key: keyof Resources) => {
+    const value = tempInputs[key];
+    const numValue = value === "" ? 10 : Math.min(300, Math.max(10, parseInt(value) || 10));
+    setResources(prev => ({ ...prev, [key]: numValue }));
+    setTempInputs(prev => ({ ...prev, [key]: numValue.toString() }));
   };
 
   const totalProbability = results.reduce(
@@ -116,11 +127,10 @@ export default function Simulator() {
               </label>
               <input
                 type="number"
-                value={resources.fuel || ""}
+                value={tempInputs.fuel}
                 onChange={(e) => handleResourceChange("fuel", e.target.value)}
+                onBlur={() => handleResourceBlur("fuel")}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="10"
-                max="300"
                 placeholder="10"
               />
             </div>
@@ -130,11 +140,10 @@ export default function Simulator() {
               </label>
               <input
                 type="number"
-                value={resources.steel || ""}
+                value={tempInputs.steel}
                 onChange={(e) => handleResourceChange("steel", e.target.value)}
+                onBlur={() => handleResourceBlur("steel")}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="10"
-                max="300"
                 placeholder="10"
               />
             </div>
@@ -144,11 +153,10 @@ export default function Simulator() {
               </label>
               <input
                 type="number"
-                value={resources.ammo || ""}
+                value={tempInputs.ammo}
                 onChange={(e) => handleResourceChange("ammo", e.target.value)}
+                onBlur={() => handleResourceBlur("ammo")}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="10"
-                max="300"
                 placeholder="10"
               />
             </div>
@@ -158,13 +166,10 @@ export default function Simulator() {
               </label>
               <input
                 type="number"
-                value={resources.bauxite || ""}
-                onChange={(e) =>
-                  handleResourceChange("bauxite", e.target.value)
-                }
+                value={tempInputs.bauxite}
+                onChange={(e) => handleResourceChange("bauxite", e.target.value)}
+                onBlur={() => handleResourceBlur("bauxite")}
                 className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                min="10"
-                max="300"
                 placeholder="10"
               />
             </div>
