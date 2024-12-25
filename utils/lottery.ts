@@ -8,10 +8,12 @@ import {
 } from "../types/lottery";
 import poolData from "../db/pool_lowdb.json";
 import itemsData from "../db/items.json";
+import secretaryBonusData from "../db/secretary_bonus.json";
 import { getPoolType, getSecretaryBonus, applySecretaryBonuses } from "./secretary";
 
 // 配置数据库
 const defaultData: Pool = poolData;
+const secretaryBonuses = secretaryBonusData;
 
 // 获取装备详情的函数
 function getItemDetails(itemId: number): ItemDetails | undefined {
@@ -32,18 +34,17 @@ function checkResourceRequirements(
   );
 }
 
-export async function calculateProbabilities(
+export const calculateProbabilities = async (
   resources: Resources,
-  shipType: ShipType,
-  hqLevel: number = 120,
-  secretaryId: number = 0,
-  forcedPoolType?: "fs" | "am" | "bx"
-): Promise<LotteryResult[]> {
+  secretary: ShipType,
+  hqLevel: number,
+  isLandBasedAircraftCondition: boolean = false
+): Promise<LotteryResult[]> => {
   // 获取最高资源类型
-  const highestResource = forcedPoolType || getPoolType(resources);
+  const highestResource = getPoolType(resources);
 
   // 构建奖池名称（例如：gunFs, gunAm, gunBx）
-  const poolKey = `${shipType}${highestResource
+  const poolKey = `${secretary}${highestResource
     .charAt(0)
     .toUpperCase()}${highestResource.slice(
     1
@@ -54,35 +55,54 @@ export async function calculateProbabilities(
 
   // 获取特殊秘书舰的概率调整
   const secretaryAdjustments = getSecretaryBonus(
-    secretaryId,
-    shipType,
+    0,
+    secretary,
     highestResource
   );
 
   // 直接使用奖池中的数值作为百分比
   let probabilities = defaultData.pool.map(item => ({
-    shipId: item.id,
+    itemId: item.id,
     probability: Number(item[poolKey]) || 0
   }));
 
   // 应用特殊秘书舰的概率调整
   probabilities = applySecretaryBonuses(probabilities, secretaryAdjustments);
 
+  // 如果满足陆攻条件，应用特殊规则的概率调整
+  if (isLandBasedAircraftCondition && secretary === "air") {
+    const landBasedBonus = secretaryBonuses.find(bonus => bonus.shortName === "陆攻");
+    if (landBasedBonus) {
+      // 应用陆攻加成到空母弹池和空母铝池
+      landBasedBonus.bonuses.forEach(poolBonus => {
+        if (poolBonus.pool === "am" || poolBonus.pool === "bx") {
+          poolBonus.adjustments.forEach(adjustment => {
+            // 在相应池中查找并调整概率
+            const targetItem = probabilities.find(item => item.itemId === adjustment.itemId);
+            if (targetItem) {
+              targetItem.probability += adjustment.value;
+            }
+          });
+        }
+      });
+    }
+  }
+
   // 处理每个装备的概率
   for (const prob of probabilities) {
     if (prob.probability > 0) {
-      const itemDetails = getItemDetails(prob.shipId);
+      const itemDetails = getItemDetails(prob.itemId);
 
       // 如果找不到装备详情，跳过该装备
       if (!itemDetails) {
         failureReasons.push({
-          itemName: `装备${prob.shipId}`,
+          itemName: `装备${prob.itemId}`,
           reason: "itemNotFound",
         });
         continue;
       }
 
-      const itemName = itemDetails.name.zh_cn || `装备${prob.shipId}`;
+      const itemName = itemDetails.name.zh_cn || `装备${prob.itemId}`;
       const requiredResources = {
         fuel: itemDetails.dismantle[0] * 10,
         ammo: itemDetails.dismantle[1] * 10,
@@ -111,9 +131,9 @@ export async function calculateProbabilities(
       }
 
       results.push({
-        poolName: `${poolKey}(${prob.shipId})`,
+        poolName: `${poolKey}(${prob.itemId})`,
         probability: prob.probability,
-        shipId: prob.shipId,
+        shipId: prob.itemId,
         itemName,
         rarity: itemDetails.rarity,
         requiredResources,
@@ -138,4 +158,4 @@ export async function calculateProbabilities(
   }
 
   return results;
-}
+};

@@ -75,12 +75,19 @@ export default function Simulator() {
       return;
     }
 
+    // 检查陆攻特殊条件
+    const isLandBasedAircraftCondition = 
+      resourcesToUse.fuel >= 240 && 
+      resourcesToUse.ammo >= 260 && 
+      resourcesToUse.bauxite >= 250;
+
     setIsCalculating(true);
     try {
       const results = await calculateProbabilities(
         resourcesToUse,
         secretaryToUse,
-        levelToUse
+        levelToUse,
+        isLandBasedAircraftCondition // 传递陆攻条件
       );
       setResults(results);
     } catch (error) {

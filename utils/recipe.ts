@@ -67,6 +67,30 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
   // 2. 遍历所有可能的秘书舰类型和资源组合
   const secretaryTypes: ShipType[] = ['gun', 'torp', 'air', 'sub'];
   
+  // 检查是否包含九六式陆攻（ID 168）
+  const hasLandBasedAircraft = items.some(item => item.id === 168);
+  
+  // 如果包含陆攻，则只生成满足特殊条件的配方
+  if (hasLandBasedAircraft) {
+    const minResources = {
+      fuel: 240,
+      ammo: 260,
+      steel: 10,
+      bauxite: 250
+    };
+    
+    // 更新最低资源需求
+    for (let j = 0; j < 4; j++) {
+      if (mins[j] < [minResources.fuel, minResources.ammo, minResources.steel, minResources.bauxite][j]) {
+        mins[j] = [minResources.fuel, minResources.ammo, minResources.steel, minResources.bauxite][j];
+      }
+    }
+    
+    // 只使用空母系秘书舰
+    secretaryTypes.length = 0;
+    secretaryTypes.push('air');
+  }
+
   for (let secretaryIndex = 0; secretaryIndex < secretaryTypes.length; secretaryIndex++) {
     const secretary = secretaryTypes[secretaryIndex];
     
@@ -82,7 +106,12 @@ export async function generateRecipes(items: Item[], hqLevel: number = 120): Pro
 
       try {
         // 4. 计算开发概率
-        const results = await calculateProbabilities(resources, secretary, hqLevel, poolType);
+        const results = await calculateProbabilities(
+          resources, 
+          secretary, 
+          hqLevel,
+          hasLandBasedAircraft && secretary === 'air'  // 传递陆攻条件
+        );
         console.log('计算结果:', results);
         console.log('失败原因:', results[0]?.failureReasons);
         
