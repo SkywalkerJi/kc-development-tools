@@ -33,6 +33,16 @@ function getAvailableItems(): ItemOption[] {
   })).sort((a, b) => a.value - b.value);
 }
 
+// 获取资源池显示名称
+function getPoolTypeName(type: string): string {
+  switch (type) {
+    case 'fs': return '油钢';
+    case 'am': return '弹药';
+    case 'bx': return '铝';
+    default: return type;
+  }
+}
+
 export default function SecretaryEditor() {
   const [secretaries, setSecretaries] = useState<SecretaryBonus[]>([]);
   const [editingSecretary, setEditingSecretary] = useState<SecretaryBonus | null>(null);
@@ -282,8 +292,8 @@ export default function SecretaryEditor() {
                   >
                     {POOL_TYPES.map(type => (
                       <option key={type} value={type}>
-                        {type === 'fs' ? '燃料/钢材开发' :
-                         type === 'am' ? '弹药开发' : '铝开发'}
+                        {type === 'fs' ? '油钢' :
+                         type === 'am' ? '弹药' : '铝'}
                       </option>
                     ))}
                   </select>
@@ -410,7 +420,7 @@ export default function SecretaryEditor() {
               <th className="px-4 py-2 text-left">简称</th>
               <th className="px-4 py-2 text-left">名称</th>
               <th className="px-4 py-2 text-left">舰种</th>
-              <th className="px-4 py-2 text-left">规则数</th>
+              <th className="px-4 py-2 text-left">规则</th>
               <th className="px-4 py-2 text-left">操作</th>
             </tr>
           </thead>
@@ -425,7 +435,19 @@ export default function SecretaryEditor() {
                    secretary.shipType === 'torp' ? '水雷系' :
                    secretary.shipType === 'air' ? '空母系' : '潜水系'}
                 </td>
-                <td className="px-4 py-2">{secretary.bonuses.length}</td>
+                <td className="px-4 py-2">
+                  {secretary.bonuses.length > 0 ? (
+                    <div className="flex gap-1 flex-wrap">
+                      {secretary.bonuses.map(bonus => (
+                        <span key={bonus.pool} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100">
+                          {getPoolTypeName(bonus.pool)}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">无</span>
+                  )}
+                </td>
                 <td className="px-4 py-2">
                   <div className="flex space-x-2">
                     <button
