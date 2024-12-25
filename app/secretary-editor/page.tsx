@@ -37,7 +37,7 @@ function getAvailableItems(): ItemOption[] {
 function getPoolTypeName(type: string): string {
   switch (type) {
     case 'fs': return '油钢';
-    case 'am': return '弹药';
+    case 'am': return '弹';
     case 'bx': return '铝';
     default: return type;
   }
@@ -81,7 +81,7 @@ export default function SecretaryEditor() {
     setEditingSecretary({ ...secretary });
   };
 
-  // 删除特殊秘书舰
+  // 删除特殊秘��舰
   const handleDeleteSecretary = async (id: number) => {
     if (confirm('确定要删除这个特殊秘书舰吗？')) {
       await fetch(`/api/secretary-bonus/${id}`, { method: 'DELETE' });
@@ -190,19 +190,46 @@ export default function SecretaryEditor() {
     }
   };
 
+  // 添加复制规则的处理函数
+  const handleCopyBonus = (bonusIndex: number) => {
+    if (editingSecretary) {
+      const currentBonus = editingSecretary.bonuses[bonusIndex];
+      // 确定下一个资源池类型
+      const currentPoolIndex = POOL_TYPES.indexOf(currentBonus.pool);
+      const nextPool = POOL_TYPES[(currentPoolIndex + 1) % POOL_TYPES.length];
+      
+      // 创建新的规则，使用深拷贝复制调整值
+      const newBonus = {
+        pool: nextPool,
+        adjustments: currentBonus.adjustments.map(adj => ({
+          itemId: adj.itemId,
+          value: adj.value
+        }))
+      };
+
+      const newBonuses = [...editingSecretary.bonuses];
+      newBonuses.splice(bonusIndex + 1, 0, newBonus);
+      
+      setEditingSecretary({
+        ...editingSecretary,
+        bonuses: newBonuses
+      });
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-gray-900 min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">特殊秘书舰规则编辑器</h1>
+        <h1 className="text-2xl font-bold text-white">特殊秘书舰规则编辑器</h1>
         <div className="space-x-2">
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             onClick={handleExportJson}
           >
             导出JSON
           </button>
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             onClick={handleAddSecretary}
           >
             添加新秘书舰
@@ -212,21 +239,34 @@ export default function SecretaryEditor() {
 
       {/* 编辑表单 */}
       {editingSecretary && (
-        <div className="bg-white p-4 rounded shadow-md mb-4">
-          <h2 className="text-xl font-bold mb-4">编辑秘书舰</h2>
+        <div className="bg-gray-800 p-4 rounded shadow-md mb-4">
+          <h2 className="text-xl font-bold mb-4 text-white">编辑秘书舰</h2>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1 text-gray-200">名称</label>
+            <input
+              type="text"
+              value={editingSecretary.name}
+              onChange={e => setEditingSecretary({
+                ...editingSecretary,
+                name: e.target.value
+              })}
+              className="border border-gray-700 p-2 rounded bg-gray-700 text-white w-full focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
           
           <div className="flex gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-1">ID</label>
+              <label className="block text-sm font-medium mb-1 text-gray-200">ID</label>
               <input
                 type="text"
                 value={editingSecretary.id}
                 disabled
-                className="border p-2 rounded bg-gray-100"
+                className="border border-gray-700 p-2 rounded bg-gray-700 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">简称</label>
+              <label className="block text-sm font-medium mb-1 text-gray-200">简称</label>
               <input
                 type="text"
                 value={editingSecretary.shortName}
@@ -234,30 +274,18 @@ export default function SecretaryEditor() {
                   ...editingSecretary,
                   shortName: e.target.value
                 })}
-                className="border p-2 rounded"
+                className="border border-gray-700 p-2 rounded bg-gray-700 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">名称</label>
-              <input
-                type="text"
-                value={editingSecretary.name}
-                onChange={e => setEditingSecretary({
-                  ...editingSecretary,
-                  name: e.target.value
-                })}
-                className="border p-2 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">舰种</label>
+              <label className="block text-sm font-medium mb-1 text-gray-200">舰种</label>
               <select
                 value={editingSecretary.shipType}
                 onChange={e => setEditingSecretary({
                   ...editingSecretary,
                   shipType: e.target.value as ShipType
                 })}
-                className="border p-2 rounded"
+                className="border border-gray-700 p-2 rounded bg-gray-700 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
                 {SHIP_TYPES.map(type => (
                   <option key={type} value={type}>
@@ -272,10 +300,10 @@ export default function SecretaryEditor() {
 
           {/* 规则列表 */}
           {editingSecretary.bonuses.map((bonus, bonusIndex) => (
-            <div key={bonusIndex} className="bg-gray-50 p-4 rounded mb-4">
+            <div key={bonusIndex} className="bg-gray-700 p-4 rounded mb-4">
               <div className="flex gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">资源池</label>
+                  <label className="block text-sm font-medium mb-1 text-gray-200">资源池</label>
                   <select
                     value={bonus.pool}
                     onChange={e => {
@@ -289,35 +317,44 @@ export default function SecretaryEditor() {
                         bonuses: newBonuses
                       });
                     }}
-                    className="border p-2 rounded"
+                    className="border border-gray-600 p-2 rounded bg-gray-600 text-white"
                   >
                     {POOL_TYPES.map(type => (
                       <option key={type} value={type}>
                         {type === 'fs' ? '油钢' :
-                         type === 'am' ? '弹药' : '铝'}
+                         type === 'am' ? '弹' : '铝'}
                       </option>
                     ))}
                   </select>
                 </div>
-                <button
-                  onClick={() => {
-                    const newBonuses = editingSecretary.bonuses.filter((_, i) => i !== bonusIndex);
-                    setEditingSecretary({
-                      ...editingSecretary,
-                      bonuses: newBonuses
-                    });
-                  }}
-                  className="text-red-500 hover:text-red-600"
-                >
-                  删除规则
-                </button>
+                <div className="flex gap-2 items-end">
+                  <button
+                    onClick={() => handleCopyBonus(bonusIndex)}
+                    className="text-blue-400 hover:text-blue-300"
+                    title="复制到下一个资源池"
+                  >
+                    复制
+                  </button>
+                  <button
+                    onClick={() => {
+                      const newBonuses = editingSecretary.bonuses.filter((_, i) => i !== bonusIndex);
+                      setEditingSecretary({
+                        ...editingSecretary,
+                        bonuses: newBonuses
+                      });
+                    }}
+                    className="text-red-400 hover:text-red-300"
+                  >
+                    删除规则
+                  </button>
+                </div>
               </div>
 
               <table className="w-full mb-4">
                 <thead>
                   <tr>
-                    <th className="text-left">装备</th>
-                    <th className="text-left">调整值</th>
+                    <th className="text-left text-gray-200">装备</th>
+                    <th className="text-left text-gray-200">调整值</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -343,11 +380,46 @@ export default function SecretaryEditor() {
                           noOptionsMessage={() => "没有找到匹配的装备"}
                           className="w-full"
                           classNames={{
-                            control: () => "border rounded",
-                            menu: () => "bg-white shadow-lg rounded mt-1",
+                            control: () => "border border-gray-600 rounded bg-gray-700",
+                            menu: () => "bg-gray-700 shadow-lg rounded mt-1",
                             option: (state: { isFocused: boolean; isSelected: boolean }) => 
-                              `px-3 py-2 ${state.isFocused ? 'bg-blue-50' : 'bg-white'} 
-                               ${state.isSelected ? 'bg-blue-100' : ''}`
+                              `px-3 py-2 ${state.isFocused ? 'bg-gray-600' : 'bg-gray-700'} 
+                               ${state.isSelected ? 'bg-blue-600' : ''} text-gray-200`,
+                            singleValue: () => "text-gray-200",
+                            input: () => "text-gray-200",
+                            placeholder: () => "text-gray-400",
+                            noOptionsMessage: () => "text-gray-300",
+                            menuList: () => "bg-gray-700",
+                            dropdownIndicator: () => "text-gray-400",
+                            indicatorSeparator: () => "bg-gray-600"
+                          }}
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              backgroundColor: 'rgb(55, 65, 81)',
+                              borderColor: 'rgb(75, 85, 99)',
+                              color: 'rgb(229, 231, 235)'
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              backgroundColor: 'rgb(55, 65, 81)'
+                            }),
+                            option: (base) => ({
+                              ...base,
+                              backgroundColor: 'rgb(55, 65, 81)',
+                              color: 'rgb(229, 231, 235)',
+                              '&:hover': {
+                                backgroundColor: 'rgb(75, 85, 99)'
+                              }
+                            }),
+                            singleValue: (base) => ({
+                              ...base,
+                              color: 'rgb(229, 231, 235)'
+                            }),
+                            input: (base) => ({
+                              ...base,
+                              color: 'rgb(229, 231, 235)'
+                            })
                           }}
                         />
                       </td>
@@ -363,7 +435,7 @@ export default function SecretaryEditor() {
                               bonuses: newBonuses
                             });
                           }}
-                          className="border p-2 rounded w-24"
+                          className="border border-gray-600 p-2 rounded bg-gray-700 text-white w-24"
                         />
                       </td>
                       <td className="py-2">
@@ -388,7 +460,7 @@ export default function SecretaryEditor() {
 
               <button
                 onClick={() => handleAddAdjustment(bonusIndex)}
-                className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
               >
                 添加装备调整
               </button>
@@ -397,13 +469,13 @@ export default function SecretaryEditor() {
 
           <div className="flex gap-4">
             <button
-              className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
               onClick={handleAddBonus}
             >
               添加规则
             </button>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               onClick={handleSave}
             >
               保存
@@ -413,34 +485,34 @@ export default function SecretaryEditor() {
       )}
 
       {/* 秘书舰列表 */}
-      <div className="bg-white rounded shadow-md overflow-hidden">
+      <div className="bg-gray-800 rounded shadow-md overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-700">
             <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">简称</th>
-              <th className="px-4 py-2 text-left">名称</th>
-              <th className="px-4 py-2 text-left">舰种</th>
-              <th className="px-4 py-2 text-left">规则</th>
-              <th className="px-4 py-2 text-left">操作</th>
+              <th className="px-4 py-2 text-left text-white">ID</th>
+              <th className="px-4 py-2 text-left text-white">简称</th>
+              <th className="px-4 py-2 text-left text-white">名称</th>
+              <th className="px-4 py-2 text-left text-white">舰种</th>
+              <th className="px-4 py-2 text-left text-white">规则</th>
+              <th className="px-4 py-2 text-left text-white">操作</th>
             </tr>
           </thead>
           <tbody>
             {secretaries.map((secretary, index) => (
-              <tr key={secretary.id} className="border-t">
-                <td className="px-4 py-2">{secretary.id}</td>
-                <td className="px-4 py-2">{secretary.shortName}</td>
-                <td className="px-4 py-2">{secretary.name}</td>
-                <td className="px-4 py-2">
+              <tr key={secretary.id} className="border-t border-gray-700">
+                <td className="px-4 py-2 text-gray-200">{secretary.id}</td>
+                <td className="px-4 py-2 text-gray-200">{secretary.shortName}</td>
+                <td className="px-4 py-2 text-gray-200">{secretary.name}</td>
+                <td className="px-4 py-2 text-gray-200">
                   {secretary.shipType === 'gun' ? '炮战系' :
                    secretary.shipType === 'torp' ? '水雷系' :
                    secretary.shipType === 'air' ? '空母系' : '潜水系'}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 text-gray-200">
                   {secretary.bonuses.length > 0 ? (
                     <div className="flex gap-1 flex-wrap">
                       {secretary.bonuses.map(bonus => (
-                        <span key={bonus.pool} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100">
+                        <span key={bonus.pool} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-600 text-gray-200">
                           {getPoolTypeName(bonus.pool)}
                         </span>
                       ))}
@@ -453,13 +525,13 @@ export default function SecretaryEditor() {
                   <div className="flex space-x-2">
                     <button
                       onClick={() => handleEditSecretary(secretary)}
-                      className="text-blue-500 hover:text-blue-600"
+                      className="text-blue-400 hover:text-blue-300"
                     >
                       编辑
                     </button>
                     <button
                       onClick={() => handleDeleteSecretary(secretary.id)}
-                      className="text-red-500 hover:text-red-600"
+                      className="text-red-400 hover:text-red-300"
                     >
                       删除
                     </button>
