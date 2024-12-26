@@ -6,7 +6,8 @@ export const translations = {
     nav: {
       simulator: '開発シミュレーター',
       formula: '複合レシピジェネレーター',
-      table: '確率一覧表'
+      table: '確率一覧表',
+      secretaryEditor: '特別秘書艦ルール'
     },
     resources: {
       fuel: '燃料',
@@ -73,7 +74,8 @@ export const translations = {
     nav: {
       simulator: '开发模拟器',
       formula: '复合公式生成器',
-      table: '概率一览表'
+      table: '概率一览表',
+      secretaryEditor: '特殊秘书舰规则'
     },
     resources: {
       fuel: '燃料',
@@ -107,7 +109,7 @@ export const translations = {
       gun: '炮战系：战舰(BB)、巡洋战舰(FBB)、重巡洋舰(CA)、工作舰(AR)',
       torp: '水雷系：驱逐舰(DD)、海防舰(DE)、轻巡洋舰(CL)、重雷装巡洋舰(CLT)、练习巡洋舰(CT)、补给舰(AO，除宗谷特务舰形态)',
       air: '空母系：正规空母(CV)、装甲空母(CVB)、轻空母(CVL)、航空战舰(BBV)、航空巡洋舰(CAV)、水上机母舰(AV)、登陆舰(LHA)、宗谷特务舰形态',
-      sub: '潜水系：潜水舰(SS)、潜水空母(SSV)、潜水母舰(AS)'
+      sub: '潜水系：潜水舰(SS)、潜水空母(SSV)、���水母舰(AS)'
     },
     hqLevel: '司令部等级',
     calculate: '计算概率',
@@ -140,7 +142,8 @@ export const translations = {
     nav: {
       simulator: '開發模擬器',
       formula: '複合公式生成器',
-      table: '概率一覽表'
+      table: '概率一覽表',
+      secretaryEditor: '特殊秘書艦規則'
     },
     resources: {
       fuel: '燃料',
@@ -207,7 +210,8 @@ export const translations = {
     nav: {
       simulator: 'Development Simulator',
       formula: 'Recipe Generator',
-      table: 'Probability Table'
+      table: 'Probability Table',
+      secretaryEditor: 'Special Secretary Rules'
     },
     resources: {
       fuel: 'Fuel',
@@ -278,7 +282,7 @@ export function getItemName(item: { name: { [key: string]: string } }, language:
     return item.name.zh_tw || item.name.zh_cn;
   }
   
-  // 如果请求英文但没有英文翻译，使用日文
+  // 如果请求英文但没有英文翻译，��用日文
   if (language === 'en_us' && !item.name.en_us) {
     return item.name.ja_jp;
   }

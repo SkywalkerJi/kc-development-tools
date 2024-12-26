@@ -101,6 +101,7 @@ export interface Translation {
     simulator: string;
     formula: string;
     table: string;
+    secretaryEditor: string;
   };
   resources: {
     fuel: string;
