@@ -222,12 +222,20 @@ export default function SecretaryEditor() {
       <div className="max-w-[1600px] mx-auto space-y-6 mt-12">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">特殊秘书舰规则编辑器</h1>
-          <button
-            onClick={handleAddSecretary}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            添加规则
-          </button>
+          <div className="space-x-2">
+            <button
+              onClick={handleExportJson}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              导出JSON
+            </button>
+            <button
+              onClick={handleAddSecretary}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              添加规则
+            </button>
+          </div>
         </div>
 
         {/* 编辑表单 */}
@@ -347,7 +355,7 @@ export default function SecretaryEditor() {
                   <thead>
                     <tr>
                       <th className="text-left text-gray-200">装备</th>
-                      <th className="text-left text-gray-200">调整值</th>
+                      <th className="text-left text-gray-200">���整值</th>
                       <th></th>
                     </tr>
                   </thead>

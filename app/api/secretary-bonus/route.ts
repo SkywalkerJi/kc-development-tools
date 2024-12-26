@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { SecretaryData } from '@/types/secretary';
 
 const secretaryBonusPath = path.join(process.cwd(), 'db', 'secretary_bonus.json');
 
@@ -16,9 +17,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const newSecretary = await request.json();
+    const newSecretary = await request.json() as SecretaryData;
     const currentData = await fs.readFile(secretaryBonusPath, 'utf8');
-    const secretaries = JSON.parse(currentData);
+    const secretaries = JSON.parse(currentData) as SecretaryData[];
     
     secretaries.push(newSecretary);
     await fs.writeFile(secretaryBonusPath, JSON.stringify(secretaries, null, 2));
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const updatedData = await request.json();
+    const updatedData = await request.json() as SecretaryData | SecretaryData[];
     
     // 如果是数组，说明是批量更新（排序操作）
     if (Array.isArray(updatedData)) {
@@ -42,9 +43,9 @@ export async function PUT(request: Request) {
     
     // 单个记录更新
     const currentData = await fs.readFile(secretaryBonusPath, 'utf8');
-    const secretaries = JSON.parse(currentData);
+    const secretaries = JSON.parse(currentData) as SecretaryData[];
     
-    const index = secretaries.findIndex((s: any) => s.id === updatedData.id);
+    const index = secretaries.findIndex((s) => s.id === updatedData.id);
     if (index !== -1) {
       secretaries[index] = updatedData;
       await fs.writeFile(secretaryBonusPath, JSON.stringify(secretaries, null, 2));
