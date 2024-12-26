@@ -1,6 +1,7 @@
 import { SecretaryData } from '@/types/secretary';
 
 const STORAGE_KEY = 'secretary_bonus_data';
+const BASE_PATH = '/kc-development-tools';
 
 // 从 localStorage 获取数据
 export function getSecretaryData(): SecretaryData[] {
@@ -60,7 +61,7 @@ export async function initializeData() {
   const existingData = localStorage.getItem(STORAGE_KEY);
   if (!existingData) {
     try {
-      const response = await fetch('/data/secretary_bonus.json');
+      const response = await fetch(`${BASE_PATH}/data/secretary_bonus.json`);
       const initialData = await response.json();
       saveSecretaryData(initialData);
     } catch (error) {
