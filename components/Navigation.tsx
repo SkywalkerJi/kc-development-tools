@@ -26,7 +26,7 @@ export default function Navigation({ language, onLanguageChange }: {
       {/* 移动端菜单按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-md lg:hidden bg-white dark:bg-gray-800 shadow-lg"
+        className="fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-800 shadow-lg"
       >
         <svg
           className="w-6 h-6 text-gray-600 dark:text-gray-200"
@@ -65,9 +65,8 @@ export default function Navigation({ language, onLanguageChange }: {
         fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg z-40
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 lg:static lg:z-0
       `}>
-        <div className="flex flex-col h-full p-4">
+        <div className="flex flex-col h-full p-4 pt-16">
           <div className="space-y-4">
             {links.map(({ href, label }) => {
               const isActive = pathname === href;

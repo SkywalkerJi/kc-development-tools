@@ -126,9 +126,9 @@ export default function Simulator() {
   };
 
   return (
-    <main className="p-4 lg:p-8">
-      <div className="space-y-8">
-        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100">
+    <main className="p-2 lg:p-4 w-full">
+      <div className="max-w-[1600px] mx-auto space-y-6 mt-12">
+        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
           {t.title}
         </h1>
 

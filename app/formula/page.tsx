@@ -145,8 +145,8 @@ export default function FormulaGenerator() {
   }, [recipes]);
 
   return (
-    <main className="p-4 lg:p-8 max-w-screen-2xl mx-auto">
-      <div className="space-y-6">
+    <main className="p-2 lg:p-4 w-full">
+      <div className="max-w-[1600px] mx-auto space-y-6 mt-12">
         <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
           {t.nav.formula}
         </h1>
@@ -155,7 +155,7 @@ export default function FormulaGenerator() {
           {/* 装备类型和选择 */}
           {itemsByType.map(({ type, items }) => (
             <div key={type.id}>
-              <div className="flex items-center gap-4 mb-2">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center whitespace-nowrap">
                   {getItemName(type, language)}
                   <span className="ml-2 text-sm text-gray-500">

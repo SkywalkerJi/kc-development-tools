@@ -56,7 +56,7 @@ export const calculateProbabilities = async (
 
   // 获取特殊秘书舰的概率调整
   const secretaryAdjustments = getSecretaryBonus(
-    0,
+    secretaryId,
     secretary,
     highestResource
   );
@@ -66,6 +66,16 @@ export const calculateProbabilities = async (
     itemId: item.id,
     probability: Number(item[poolKey]) || 0
   }));
+
+  // 添加只在秘书舰加成中出现的装备
+  secretaryAdjustments.forEach(adjustment => {
+    if (!probabilities.some(p => p.itemId === adjustment.itemId)) {
+      probabilities.push({
+        itemId: adjustment.itemId,
+        probability: 0  // 基础概率为0
+      });
+    }
+  });
 
   // 应用特殊秘书舰的概率调整
   probabilities = applySecretaryBonuses(probabilities, secretaryAdjustments);
