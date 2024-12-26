@@ -145,7 +145,7 @@ export default function FormulaGenerator() {
   }, [recipes]);
 
   return (
-    <main className="p-4 lg:p-8 max-w-[1920px] mx-auto">
+    <main className="p-4 lg:p-8 max-w-screen-2xl mx-auto">
       <div className="space-y-6">
         <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
           {t.nav.formula}
@@ -287,21 +287,11 @@ export default function FormulaGenerator() {
                       >
                         <div className="flex items-center gap-6 text-sm">
                           <div className="flex gap-4">
-                            <span>
-                              {t.resources.fuel}: {recipe.resources.fuel}
-                            </span>
-                            <span>
-                              {t.resources.ammo}: {recipe.resources.ammo}
-                            </span>
-                            <span>
-                              {t.resources.steel}: {recipe.resources.steel}
-                            </span>
-                            <span>
-                              {t.resources.bauxite}: {recipe.resources.bauxite}
+                            <span className="font-medium">
+                              {recipe.resources.fuel}/{recipe.resources.ammo}/{recipe.resources.steel}/{recipe.resources.bauxite}
                             </span>
                           </div>
                           <div className="text-gray-500">
-                            {t.secretary}:{" "}
                             {recipe.secretaryInfo?.shortName
                               ? `${recipe.secretaryInfo.shortName} (${t.shipTypes[recipe.shipTypes[0]]})`
                               : recipe.shipTypes.map((type) => t.shipTypes[type]).join("/")}
@@ -315,9 +305,10 @@ export default function FormulaGenerator() {
                           >
                             {t.details}
                           </Link>
-                          <span className="text-lg font-bold min-w-[60px] text-right">
-                            {recipe.probability}%
-                          </span>
+                          <div className="flex items-center gap-1 min-w-[120px] justify-end">
+                            <span className="text-lg font-bold">{recipe.probability}%</span>
+                            <span className="text-sm text-red-500">({recipe.failureRate}%)</span>
+                          </div>
                           <svg
                             className={`w-5 h-5 transition-transform duration-200 ${
                               expandedRecipes.includes(index)
