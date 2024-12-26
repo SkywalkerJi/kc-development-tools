@@ -1,5 +1,11 @@
 export type ShipType = 'gun' | 'torp' | 'air' | 'sub';
 
+export interface SecretaryOption {
+  id: number;
+  shortName: string;
+  shipType: ShipType;
+}
+
 export interface SecretaryAdjustment {
   itemId: number;
   value: number;
