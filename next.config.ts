@@ -5,6 +5,16 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/kc-development-tools',
+        permanent: true,
+        basePath: false
+      }
+    ];
+  }
 }
 
 export default nextConfig;
