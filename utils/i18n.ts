@@ -3,6 +3,26 @@ import { Language } from '../types/lottery';
 export const translations = {
   ja_jp: {
     title: '艦これ装備開発シミュレーター',
+    description: '提督のための装備開発シミュレーションと分析ツール',
+    simulator: {
+      title: '開発シミュレーター',
+      description: '装備開発の結果をシミュレーション、特別秘書艦のボーナスを含む',
+      button: 'シミュレーション開始'
+    },
+    formula: {
+      title: '複合レシピジェネレーター',
+      description: '目標装備に基づいて最適な複合レシピを生成',
+      button: 'レシピ生成'
+    },
+    table: {
+      title: '確率一覧表',
+      description: '全装備の開発確率、基本確率と秘書艦ボーナスを含む',
+      button: '確率表示'
+    },
+    footer: {
+      disclaimer: '本ツールは学習目的で作成されました。ゲームデータはネットから収集されています。',
+      github: '問題や提案がございましたら、GitHubでissueを作成してください。'
+    },
     nav: {
       simulator: '開発シミュレーター',
       formula: '複合レシピジェネレーター',
@@ -40,7 +60,7 @@ export const translations = {
       title: '秘書艦種説明',
       gun: '砲戦系：戦艦(BB)、巡洋戦艦(FBB)、重巡洋艦(CA)、工作艦(AR)',
       torp: '水雷系：駆逐艦(DD)、海防艦(DE)、軽巡洋艦(CL)、重雷装巡洋艦(CLT)、練習巡洋艦(CT)、補給艦(AO、宗谷特務艦形態を除く)',
-      air: '空母系：正規空母(CV)、装甲空母(CVB)、軽空母(CVL)、航空戦艦(BBV)、航空巡洋艦(CAV)、水上機母艦(AV)、揚陸艦(LHA)、宗谷特務艦形態',
+      air: '空母系：正規空母(CV)、装甲空母(CVB)、軽空母(CVL)、航空戦艦(BBV)、航空巡洋艦(CAV)、���上機母艦(AV)、揚陸艦(LHA)、宗谷特務艦形態',
       sub: '潜水系：潜水艦(SS)、潜水空母(SSV)、潜水母艦(AS)'
     },
     hqLevel: '司令部レベル',
@@ -70,7 +90,27 @@ export const translations = {
     probability: '確率',
   },
   zh_cn: {
-    title: 'Kancolle开发模拟器',
+    title: 'Kancolle开发工具集',
+    description: '为提督们提供的装备开发模拟与数据分析工具',
+    simulator: {
+      title: '开发模拟器',
+      description: '模拟装备开发结果，支持特殊秘书舰加成，帮助提督优化开发策略。',
+      button: '开始模拟'
+    },
+    formula: {
+      title: '复合公式生成器',
+      description: '根据目标装备生成最优的复合公式，提高开发效率。',
+      button: '生成公式'
+    },
+    table: {
+      title: '概率一览表',
+      description: '查看所有装备的开发概率，包括基础概率和秘书舰加成。',
+      button: '查看概率'
+    },
+    footer: {
+      disclaimer: '本项目仅供学习交流使用，游戏数据来源于网络',
+      github: '如有问题或建议，欢迎在 GitHub 上提出 issue'
+    },
     nav: {
       simulator: '开发模拟器',
       formula: '复合公式生成器',
@@ -109,7 +149,7 @@ export const translations = {
       gun: '炮战系：战舰(BB)、巡洋战舰(FBB)、重巡洋舰(CA)、工作舰(AR)',
       torp: '水雷系：驱逐舰(DD)、海防舰(DE)、轻巡洋舰(CL)、重雷装巡洋舰(CLT)、练习巡洋舰(CT)、补给舰(AO，除宗谷特务舰形态)',
       air: '空母系：正规空母(CV)、装甲空母(CVB)、轻空母(CVL)、航空战舰(BBV)、航空巡洋舰(CAV)、水上机母舰(AV)、登陆舰(LHA)、宗谷特务舰形态',
-      sub: '潜水系：潜水舰(SS)、潜水空母(SSV)、���水母舰(AS)'
+      sub: '潜水系：潜水舰(SS)、潜水空母(SSV)、潜水母舰(AS)'
     },
     hqLevel: '司令部等级',
     calculate: '计算概率',
@@ -138,7 +178,27 @@ export const translations = {
     probability: '概率',
   },
   zh_tw: {
-    title: 'Kancolle開發模擬器',
+    title: 'Kancolle開發工具集',
+    description: '為提督們提供的裝備開發模擬與數據分析工具',
+    simulator: {
+      title: '開發模擬器',
+      description: '模擬裝備開發結果，支持特殊秘書艦加成，幫助提督優化開發策略。',
+      button: '開始模擬'
+    },
+    formula: {
+      title: '複合公式生成器',
+      description: '根據目標裝備生成最優的複合公式，提高開發效率。',
+      button: '生成公式'
+    },
+    table: {
+      title: '概率一覽表',
+      description: '查看所有裝備的開發概率，包括基礎概率和秘書艦加成。',
+      button: '查看概率'
+    },
+    footer: {
+      disclaimer: '本項目僅供學習交流使用，遊戲數據來源於網絡',
+      github: '如有問題或建議，歡迎在 GitHub 上提出 issue'
+    },
     nav: {
       simulator: '開發模擬器',
       formula: '複合公式生成器',
@@ -206,7 +266,27 @@ export const translations = {
     probability: '概率',
   },
   en_us: {
-    title: 'Kancolle Equipment Development Simulator',
+    title: 'Kancolle Development Tools',
+    description: 'Equipment development simulation and analysis tools for admirals',
+    simulator: {
+      title: 'Development Simulator',
+      description: 'Simulate equipment development results with special secretary ship bonuses.',
+      button: 'Start Simulation'
+    },
+    formula: {
+      title: 'Recipe Generator',
+      description: 'Generate optimal composite recipes based on target equipment.',
+      button: 'Generate Recipe'
+    },
+    table: {
+      title: 'Probability Table',
+      description: 'View development probabilities for all equipment, including base rates and secretary bonuses.',
+      button: 'View Probabilities'
+    },
+    footer: {
+      disclaimer: 'This project is for learning purposes only. Game data is sourced from the internet.',
+      github: 'For issues or suggestions, please create an issue on GitHub.'
+    },
     nav: {
       simulator: 'Development Simulator',
       formula: 'Recipe Generator',
@@ -278,11 +358,11 @@ export const translations = {
 export function getItemName(item: { name: { [key: string]: string } }, language: Language): string {
   // 如果请求繁体中文
   if (language === 'zh_tw') {
-    // 如果有繁体中文翻译就使用，否则使用简体中文
+    // 果有繁体中文翻译就使用，否则使用简体中文
     return item.name.zh_tw || item.name.zh_cn;
   }
   
-  // 如果请求英文但没有英文翻译，��用日文
+  // 如果请求英文但没有英文翻译，用日文
   if (language === 'en_us' && !item.name.en_us) {
     return item.name.ja_jp;
   }
