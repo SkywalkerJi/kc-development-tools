@@ -1,12 +1,13 @@
 {
-  "name": "lottery-simulator",
+  "name": "kancolle-development-tools",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "next build && next export -o out && touch out/.nojekyll"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.20.6",
